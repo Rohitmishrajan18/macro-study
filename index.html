@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XMBA 201 Macroeconomics — Final Exam Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f8f9fa;--card:#fff;--primary:#1a3a5c;--accent:#2563eb;--accent-light:#dbeafe;--green:#16a34a;--green-light:#dcfce7;--red:#dc2626;--red-light:#fee2e2;--orange:#ea580c;--orange-light:#fff7ed;--gray:#6b7280;--gray-light:#e5e7eb;--text:#1f2937;--radius:10px;--shadow:0 1px 3px rgba(0,0,0,.08)}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh}
+.container{max-width:800px;margin:0 auto;padding:16px}
+h1{font-size:1.4rem;font-weight:700;color:var(--primary)}
+h2{font-size:1.15rem;font-weight:600;color:var(--primary);margin-bottom:12px}
+h3{font-size:1rem;font-weight:600}
+.subtitle{color:var(--gray);font-size:.85rem;margin-top:2px}
+header{text-align:center;padding:20px 0 10px}
+.card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 20px;border:none;border-radius:8px;font-family:inherit;font-size:.9rem;font-weight:500;cursor:pointer;transition:all .15s}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:#1d4ed8}
+.btn-outline{background:transparent;border:1.5px solid var(--gray-light);color:var(--text)}.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-sm{padding:6px 14px;font-size:.82rem}
+.btn-green{background:var(--green);color:#fff}
+.btn-red{background:var(--red);color:#fff}
+.btn-block{width:100%;margin-top:8px}
+.badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:600}
+.badge-blue{background:var(--accent-light);color:var(--accent)}
+.badge-green{background:var(--green-light);color:var(--green)}
+.badge-red{background:var(--red-light);color:var(--red)}
+.badge-orange{background:var(--orange-light);color:var(--orange)}
+.progress-bar{height:8px;background:var(--gray-light);border-radius:4px;overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;border-radius:4px;transition:width .3s}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+@media(max-width:600px){.grid-2,.grid-3{grid-template-columns:1fr}}
+.mode-card{cursor:pointer;transition:transform .1s,box-shadow .15s;border:2px solid transparent}
+.mode-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1);border-color:var(--accent)}
+.mode-icon{font-size:1.6rem;margin-bottom:6px}
+.mode-label{font-weight:600;font-size:.9rem}
+.mode-desc{font-size:.78rem;color:var(--gray);margin-top:2px}
+.option-btn{text-align:left;padding:12px 16px;border:1.5px solid var(--gray-light);border-radius:8px;background:var(--card);cursor:pointer;font-family:inherit;font-size:.88rem;width:100%;margin-bottom:8px;transition:all .15s}
+.option-btn:hover:not(.disabled){border-color:var(--accent);background:var(--accent-light)}
+.option-btn.correct{border-color:var(--green);background:var(--green-light)}
+.option-btn.wrong{border-color:var(--red);background:var(--red-light)}
+.option-btn.disabled{cursor:default;opacity:.85}
+.explanation{padding:12px 16px;border-radius:8px;margin-top:10px;font-size:.88rem;line-height:1.5}
+.explanation.correct-exp{background:var(--green-light);border-left:3px solid var(--green)}
+.explanation.wrong-exp{background:var(--red-light);border-left:3px solid var(--red)}
+.flashcard{min-height:200px;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;cursor:pointer;user-select:none;position:relative}
+.flashcard .label{position:absolute;top:10px;left:14px;font-size:.72rem;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.5px}
+.flashcard .content{font-size:1.05rem}
+.flashcard .hint{position:absolute;bottom:10px;font-size:.75rem;color:var(--gray)}
+.timer-bar{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:.85rem;font-weight:600;color:var(--primary)}
+.timer-bar .bar{flex:1;height:6px;background:var(--gray-light);border-radius:3px;overflow:hidden}
+.timer-bar .bar-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .3s}
+.timer-bar .bar-fill.warning{background:var(--orange)}
+.timer-bar .bar-fill.danger{background:var(--red)}
+.topic-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--gray-light)}
+.topic-row:last-child{border-bottom:none}
+.topic-name{font-size:.88rem;font-weight:500}
+.topic-pct{font-size:.85rem;font-weight:600}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.back-btn{background:none;border:none;font-family:inherit;font-size:.88rem;color:var(--accent);cursor:pointer;font-weight:500;padding:4px 0}
+.back-btn:hover{text-decoration:underline}
+.question-num{font-size:.82rem;color:var(--gray);font-weight:500}
+.input-field{width:100%;padding:10px 14px;border:1.5px solid var(--gray-light);border-radius:8px;font-family:inherit;font-size:.9rem;outline:none;transition:border .15s}
+.input-field:focus{border-color:var(--accent)}
+.study-plan-step{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-light)}
+.study-plan-step:last-child{border-bottom:none}
+.step-time{font-weight:700;color:var(--accent);white-space:nowrap;min-width:70px;font-size:.85rem}
+.step-info{font-size:.88rem}
+.step-info strong{font-weight:600}
+.break-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:100}
+.break-modal{background:var(--card);border-radius:16px;padding:30px;text-align:center;max-width:380px;margin:16px}
+.break-modal h2{font-size:1.2rem;margin-bottom:8px}
+.break-modal p{color:var(--gray);font-size:.9rem;margin-bottom:16px}
+.hidden{display:none!important}
+.mastery-section{margin-top:16px}
+.scenario-text{font-size:.95rem;line-height:1.6;padding:16px;background:#f0f4f8;border-radius:8px;margin-bottom:14px}
+.score-big{font-size:2.5rem;font-weight:700;color:var(--primary)}
+.score-label{font-size:.9rem;color:var(--gray)}
+.result-topic{margin-bottom:6px}
+.tf-btn{flex:1;padding:14px;font-size:1rem;font-weight:600;border-radius:8px;border:2px solid var(--gray-light);background:var(--card);cursor:pointer;transition:all .15s;font-family:inherit}
+.tf-btn:hover{border-color:var(--accent)}
+.tf-btn.correct{border-color:var(--green);background:var(--green-light)}
+.tf-btn.wrong{border-color:var(--red);background:var(--red-light)}
+.flex-row{display:flex;gap:10px}
+.tag{display:inline-block;padding:2px 8px;background:var(--accent-light);color:var(--accent);border-radius:4px;font-size:.72rem;font-weight:600;margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<div class="container" id="app"></div>
+
+<!-- Break Reminder Overlay -->
+<div class="break-overlay hidden" id="breakOverlay">
+<div class="break-modal">
+<h2>Time for a Break!</h2>
+<p>You've been studying for 50 minutes. Stand up, stretch, grab some water. Your brain will thank you.</p>
+<button class="btn btn-primary" onclick="dismissBreak()">I'm Back, Let's Go</button>
+</div>
+</div>
+
+<script>
+// ============================================================
+// DATA: Question Bank (80+ questions across all topics)
+// ============================================================
+const TOPICS = {
+  ISMP: "IS-MP Model",
+  ADIA: "AD-IA Model",
+  PHILLIPS: "Phillips Curve",
+  SOLOW: "Solow Growth",
+  MONETARY: "Monetary Policy",
+  FISCAL: "Fiscal Policy",
+  EXCHANGE: "Exchange Rates",
+  INFLATION: "Inflation Expectations",
+  OPEN: "Open Economy Macro"
+};
+
+// -- Flashcards (Concept Review) --
+const flashcards = [
+  {topic:"ISMP",front:"What does the IS curve represent?",back:"The IS curve shows combinations of output (Y) and the real interest rate (r) where the goods market is in equilibrium. It slopes downward: lower r stimulates investment and consumption, raising Y."},
+  {topic:"ISMP",front:"What does the MP curve represent?",back:"The MP curve represents the central bank's monetary policy rule, showing how it sets the real interest rate as a function of economic conditions (inflation, output gap). It is typically upward-sloping or flat."},
+  {topic:"ISMP",front:"What shifts the IS curve right?",back:"Expansionary fiscal policy (higher G or lower T), increased consumer/business confidence, a wealth effect from rising asset prices, or stronger foreign demand for exports."},
+  {topic:"ADIA",front:"What is the AD curve in the AD-IA framework?",back:"The AD curve shows the negative relationship between inflation and output, derived from the IS-MP model. Higher inflation leads the central bank to raise r (via MP), which reduces Y along the IS curve."},
+  {topic:"ADIA",front:"What is the IA (Inflation Adjustment) line?",back:"The IA line is a horizontal line at the current inflation rate, reflecting adaptive inflation expectations. It shifts up when inflation expectations rise and down when they fall. It captures inflation persistence."},
+  {topic:"ADIA",front:"How does a negative demand shock appear in AD-IA?",back:"The AD curve shifts left, moving the economy to a point below potential output. Inflation initially stays on the IA line but gradually falls as the output gap persists, shifting IA downward over time."},
+  {topic:"PHILLIPS",front:"State the expectations-augmented Phillips Curve.",back:"pi = pi_e - beta(u - u_n) + v, where pi is inflation, pi_e is expected inflation, u is unemployment, u_n is the natural rate, beta > 0, and v represents supply shocks."},
+  {topic:"PHILLIPS",front:"What is the sacrifice ratio?",back:"The sacrifice ratio is the cumulative percentage of GDP that must be forgone to reduce inflation by 1 percentage point. It measures the real cost of disinflation and depends on how quickly expectations adjust."},
+  {topic:"SOLOW",front:"What are the key equations of the Solow model?",back:"Y = F(K,L) (production function), capital accumulation: dK = sY - deltaK. In steady state, sY* = deltaK*, meaning investment equals depreciation. Per-worker: y = f(k), dk = sy - (n+delta)k."},
+  {topic:"SOLOW",front:"What causes long-run growth in the Solow model?",back:"In the basic Solow model, only technological progress (TFP growth) drives sustained per-capita growth. Capital accumulation alone leads to a steady state due to diminishing returns."},
+  {topic:"SOLOW",front:"What is the Golden Rule level of capital?",back:"The capital stock that maximizes steady-state consumption. It occurs where MPK = delta + n (marginal product of capital equals depreciation rate plus population growth). Saving rate is set so s*f(k) = (n+delta)k at that k."},
+  {topic:"MONETARY",front:"How does monetary policy transmit through the economy?",back:"Central bank lowers/raises policy rate, which affects market interest rates, asset prices, exchange rates, and credit conditions. These channels influence consumption, investment, net exports, and ultimately output and inflation."},
+  {topic:"MONETARY",front:"What is the Taylor Rule?",back:"r = r* + 0.5(pi - pi*) + 0.5(Y - Y*)/Y*, where r* is the neutral real rate, pi* is the inflation target. It prescribes rate adjustments based on deviations of inflation and output from targets."},
+  {topic:"FISCAL",front:"What is the government spending multiplier?",back:"In a simple Keynesian model, the multiplier is 1/(1 - MPC). If MPC = 0.8, multiplier = 5. In practice it's smaller due to crowding out, imports, and monetary policy offset. Typically estimated at 0.8 to 1.5."},
+  {topic:"FISCAL",front:"What is Ricardian Equivalence?",back:"The theory that consumers, anticipating future taxes to repay government debt, increase saving to offset fiscal stimulus. If true, tax cuts have no effect on demand. In practice, it's a theoretical benchmark; liquidity constraints and myopia weaken it."},
+  {topic:"EXCHANGE",front:"What is the interest rate parity condition?",back:"Uncovered interest parity: i_domestic - i_foreign = expected depreciation of domestic currency. If US rates exceed EU rates, the dollar is expected to depreciate to equalize returns on comparable assets."},
+  {topic:"EXCHANGE",front:"How does a currency depreciation affect the economy?",back:"Exports become cheaper (boosting demand), imports become more expensive (reducing demand for imports, raising domestic prices). Net exports improve (with a J-curve lag). It's expansionary but can be inflationary."},
+  {topic:"INFLATION",front:"Anchored vs. unanchored inflation expectations?",back:"Anchored: long-run expectations stay near the central bank's target regardless of short-run shocks. Unanchored: expectations drift with actual inflation, creating self-fulfilling spirals. Credible monetary policy anchors expectations."},
+  {topic:"OPEN",front:"What is the Mundell-Fleming trilemma?",back:"A country can only have two of three: (1) free capital flows, (2) fixed exchange rate, (3) independent monetary policy. Most advanced economies choose free capital flows + independent policy, letting the exchange rate float."}
+];
+
+// -- Lightning Quiz (MC, 60-sec rapid fire) --
+const lightningQuiz = [
+  {topic:"ISMP",q:"In the IS-MP model, a decrease in government spending shifts:",options:["IS left","IS right","MP up","MP down"],answer:0,why:"Lower G reduces aggregate demand at every interest rate, shifting the IS curve to the left."},
+  {topic:"ISMP",q:"If the central bank raises the real interest rate at every level of output, the MP curve:",options:["Shifts up","Shifts down","Becomes flatter","Does not change"],answer:0,why:"A tighter monetary policy rule means higher r for any given output, shifting MP upward."},
+  {topic:"ADIA",q:"A positive supply shock in the AD-IA model:",options:["Shifts IA down","Shifts AD right","Shifts IA up","Shifts AD left"],answer:0,why:"A favorable supply shock (e.g., oil price drop) reduces costs, lowering inflation and shifting the IA line downward."},
+  {topic:"ADIA",q:"Long-run equilibrium in AD-IA occurs where:",options:["AD intersects IA at potential output","AD is above IA","IA is vertical","MP intersects IS"],answer:0,why:"In long-run equilibrium, output equals potential and inflation equals expected inflation, so AD crosses IA right at Y*."},
+  {topic:"PHILLIPS",q:"The short-run Phillips Curve shows a tradeoff between:",options:["Inflation and unemployment","GDP and interest rates","Saving and investment","Exports and imports"],answer:0,why:"The Phillips Curve captures the inverse short-run relationship: lower unemployment is associated with higher inflation."},
+  {topic:"PHILLIPS",q:"If expected inflation rises by 2%, the short-run Phillips Curve:",options:["Shifts up by 2%","Shifts down by 2%","Becomes steeper","Does not shift"],answer:0,why:"Higher inflation expectations shift the entire SRPC upward; at every unemployment rate, inflation is 2% higher."},
+  {topic:"SOLOW",q:"In the Solow model, an increase in the saving rate leads to:",options:["Higher steady-state output per worker","Permanent increase in growth rate","Lower steady-state capital","No change in output"],answer:0,why:"A higher saving rate raises the steady-state level of capital and output per worker, but growth eventually returns to zero (plus tech progress)."},
+  {topic:"SOLOW",q:"Diminishing returns to capital in the Solow model means:",options:["Each additional unit of K adds less to output","Capital never depreciates","Growth is always increasing","Labor is not productive"],answer:0,why:"With diminishing MPK, each extra unit of capital produces less additional output, which is why the economy reaches a steady state."},
+  {topic:"MONETARY",q:"Quantitative easing primarily works by:",options:["Lowering long-term interest rates and boosting asset prices","Raising the federal funds rate","Increasing bank reserve requirements","Reducing government spending"],answer:0,why:"QE involves large-scale asset purchases that push down long-term yields and raise asset prices, easing financial conditions."},
+  {topic:"MONETARY",q:"The zero lower bound refers to:",options:["The inability to lower nominal interest rates below zero","Zero inflation target","Zero government debt","Zero unemployment"],answer:0,why:"Nominal rates can't go significantly below zero because people can hold cash. This limits conventional monetary policy in deep recessions."},
+  {topic:"FISCAL",q:"Automatic stabilizers include:",options:["Progressive income taxes and unemployment insurance","Central bank rate cuts","Trade tariffs","Currency interventions"],answer:0,why:"These fiscal mechanisms automatically increase spending and reduce taxes during recessions without new legislation."},
+  {topic:"FISCAL",q:"Crowding out occurs when government borrowing:",options:["Raises interest rates, reducing private investment","Lowers taxes","Increases exports","Decreases inflation"],answer:0,why:"Higher government borrowing competes for loanable funds, pushing up interest rates and discouraging private investment."},
+  {topic:"EXCHANGE",q:"Under a floating exchange rate, expansionary monetary policy causes the domestic currency to:",options:["Depreciate","Appreciate","Stay unchanged","First appreciate then depreciate"],answer:0,why:"Lower domestic interest rates make domestic assets less attractive, causing capital outflow and currency depreciation."},
+  {topic:"EXCHANGE",q:"Purchasing Power Parity (PPP) implies that:",options:["Exchange rates adjust so identical goods cost the same across countries","Interest rates equalize across countries","Trade balances are always zero","Capital flows determine exchange rates"],answer:0,why:"PPP says exchange rates move to equalize price levels for a common basket of goods across countries in the long run."},
+  {topic:"INFLATION",q:"Adaptive expectations assume that people form inflation expectations based on:",options:["Past inflation","Rational forecasts of future policy","Current stock prices","Real GDP growth"],answer:0,why:"Under adaptive expectations, agents look backward, setting expected inflation roughly equal to recently observed inflation."},
+  {topic:"INFLATION",q:"If a central bank lacks credibility, disinflation is:",options:["More costly in terms of output loss","Costless","Achieved by raising government spending","Automatic"],answer:0,why:"Without credibility, expectations don't adjust quickly, so reducing inflation requires a larger and longer output gap (higher sacrifice ratio)."},
+  {topic:"OPEN",q:"A country with a trade deficit is:",options:["Importing more than it exports (net borrower)","Exporting more than it imports","Running a budget surplus","Experiencing deflation"],answer:0,why:"A trade deficit means imports > exports, financed by net capital inflows (borrowing from abroad)."},
+  {topic:"OPEN",q:"In the Mundell-Fleming model with flexible exchange rates, fiscal expansion:",options:["Appreciates the currency and may crowd out net exports","Depreciates the currency","Has no effect on output","Always reduces interest rates"],answer:0,why:"Fiscal expansion raises interest rates, attracting capital inflows that appreciate the currency, reducing net exports and partially offsetting the stimulus."},
+  {topic:"MONETARY",q:"The neutral (natural) real interest rate is the rate that:",options:["Keeps output at potential with stable inflation","Maximizes employment","Equals zero","Equals the inflation rate"],answer:0,why:"The neutral rate is the real interest rate consistent with the economy operating at potential output with inflation at target."},
+  {topic:"ISMP",q:"A rightward shift of the IS curve combined with an upward-sloping MP curve results in:",options:["Higher output and higher real interest rate","Lower output and lower rate","Higher output and lower rate","No change"],answer:0,why:"Moving along an upward-sloping MP curve to the new IS intersection gives both higher Y and higher r."}
+];
+
+// -- True/False Myth Busters --
+const tfQuestions = [
+  {topic:"MONETARY",statement:"Higher interest rates always reduce inflation immediately.",answer:false,why:"Monetary policy works with long and variable lags (typically 12-18 months). In the short run, higher rates may even increase costs for borrowers before demand effects kick in."},
+  {topic:"FISCAL",statement:"Government deficits always cause inflation.",answer:false,why:"Deficits are inflationary only if the economy is near full capacity or if monetized by the central bank. In a deep recession with slack, deficits can boost output without significant inflation."},
+  {topic:"PHILLIPS",statement:"The long-run Phillips Curve is vertical at the natural rate of unemployment.",answer:true,why:"In the long run, inflation expectations fully adjust, so there is no tradeoff. The economy returns to the natural rate regardless of the inflation level."},
+  {topic:"SOLOW",statement:"A higher saving rate permanently increases the growth rate of GDP per capita in the Solow model.",answer:false,why:"A higher saving rate raises the level of steady-state output but not the permanent growth rate. Only technological progress drives sustained per-capita growth."},
+  {topic:"EXCHANGE",statement:"A weaker domestic currency always improves the trade balance.",answer:false,why:"In the short run, the J-curve effect means the trade balance may initially worsen (contracts are pre-set in foreign currency). Improvement comes with a lag as volumes adjust."},
+  {topic:"INFLATION",statement:"If actual inflation is below expected inflation, unemployment is above the natural rate.",answer:true,why:"From the Phillips Curve: pi < pi_e implies (u - u_n) > 0. The economy is in a recessionary gap with slack in the labor market."},
+  {topic:"MONETARY",statement:"The central bank directly controls long-term interest rates.",answer:false,why:"The central bank sets the short-term policy rate. Long-term rates are determined by market expectations of future short rates, term premia, and risk appetite. QE can influence but not directly control them."},
+  {topic:"FISCAL",statement:"Tax cuts always pay for themselves through higher growth (Laffer Curve).",answer:false,why:"The Laffer Curve is real in theory, but most economies are not on the prohibitive side. Empirically, most tax cuts reduce revenue. Self-financing tax cuts are the exception, not the rule."},
+  {topic:"OPEN",statement:"Under fixed exchange rates and free capital mobility, monetary policy is effective.",answer:false,why:"This violates the Mundell-Fleming trilemma. With fixed rates and free capital flows, the central bank must use reserves to maintain the peg, surrendering independent monetary policy."},
+  {topic:"ADIA",statement:"A positive demand shock permanently raises output above potential in the AD-IA model.",answer:false,why:"A demand shock temporarily raises output, but the resulting inflation shifts the IA line up, and the economy returns to potential output at a higher inflation rate."},
+  {topic:"SOLOW",statement:"Population growth raises steady-state output per worker in the Solow model.",answer:false,why:"Higher population growth (n) increases the break-even investment line, reducing steady-state capital per worker (k*) and output per worker (y*)."},
+  {topic:"ISMP",statement:"In the IS-MP model, the MP curve shifts when the central bank changes its policy rule.",answer:true,why:"The MP curve represents the central bank's reaction function. If it becomes more hawkish (raising rates more aggressively for given conditions), the MP curve shifts up."},
+  {topic:"EXCHANGE",statement:"Real exchange rate appreciation makes domestic goods more expensive relative to foreign goods.",answer:true,why:"A real appreciation means the domestic price level (converted to foreign currency) rises relative to foreign prices, reducing export competitiveness."},
+  {topic:"INFLATION",statement:"Rational expectations imply that only unexpected monetary policy has real effects.",answer:true,why:"Under rational expectations, anticipated policy is already factored into prices and wages. Only surprise policy changes affect real output in the short run (the Lucas critique)."},
+  {topic:"MONETARY",statement:"Negative real interest rates are impossible.",answer:false,why:"Negative real rates occur whenever inflation exceeds the nominal interest rate. This has been common in many economies, especially post-2008 and during COVID stimulus periods."}
+];
+
+// -- Numerical Challenges --
+const numericalQs = [
+  {topic:"FISCAL",q:"If the marginal propensity to consume (MPC) is 0.75, what is the government spending multiplier in a simple Keynesian model?",answer:4,tolerance:0.1,unit:"",why:"Multiplier = 1/(1 - MPC) = 1/(1 - 0.75) = 1/0.25 = 4. Each dollar of G generates $4 of total output."},
+  {topic:"FISCAL",q:"If MPC = 0.8 and the government cuts taxes by $100 billion, what is the initial change in aggregate demand from the tax multiplier?",answer:400,tolerance:10,unit:"billion $",why:"Tax multiplier = -MPC/(1-MPC) = -0.8/0.2 = -4. Change in AD = -4 x (-100) = $400 billion increase."},
+  {topic:"SOLOW",q:"In a Solow model, if Y = K^0.5 * L^0.5, s = 0.3, delta = 0.1, and L = 1. What is the steady-state capital per worker (k*)?",answer:9,tolerance:0.5,unit:"",why:"Steady state: s*f(k) = delta*k. So 0.3*k^0.5 = 0.1*k. Dividing: 0.3/0.1 = k^0.5, so k^0.5 = 3, k* = 9."},
+  {topic:"SOLOW",q:"Using the previous Solow model (k* = 9), what is steady-state output per worker (y*)?",answer:3,tolerance:0.1,unit:"",why:"y* = f(k*) = k*^0.5 = 9^0.5 = 3."},
+  {topic:"MONETARY",q:"Using the Taylor Rule: r = 2 + 0.5(pi - 2) + 0.5(gap). If inflation is 5% and the output gap is 2%, what policy rate does the rule prescribe?",answer:5,tolerance:0.1,unit:"%",why:"r = 2 + 0.5(5-2) + 0.5(2) = 2 + 1.5 + 1 = 4.5% real. Adding inflation for nominal: 4.5 + 5 = 9.5%. But if the formula gives the real rate: r = 2 + 1.5 + 1 = 4.5. Nominal = 4.5 + 5 = 9.5. Actually, the Taylor rule often states the nominal rate: i = r* + pi + 0.5(pi - pi*) + 0.5(gap) = 2 + 5 + 0.5(3) + 0.5(2) = 2 + 5 + 1.5 + 1 = 9.5. Let me restate: the real rate prescribed is 4.5, nominal is 9.5. The question asks for the real policy rate = 4.5. Rounding: answer is 4.5.",hint:"Use r = r* + 0.5(pi - pi_target) + 0.5(gap), r* = 2, pi_target = 2"},
+  {topic:"PHILLIPS",q:"If expected inflation is 3%, the natural rate of unemployment is 5%, actual unemployment is 7%, and beta = 0.5, what is actual inflation?",answer:2,tolerance:0.1,unit:"%",why:"pi = pi_e - beta(u - u_n) = 3 - 0.5(7 - 5) = 3 - 1 = 2%."},
+  {topic:"EXCHANGE",q:"If the US interest rate is 5%, the EU rate is 2%, and UIP holds, what is the expected annual depreciation of the dollar?",answer:3,tolerance:0.1,unit:"%",why:"UIP: i_US - i_EU = expected depreciation of USD. 5% - 2% = 3% expected dollar depreciation."},
+  {topic:"FISCAL",q:"If the balanced-budget multiplier applies (equal increase in G and T), and the increase is $50 billion, what is the change in GDP?",answer:50,tolerance:5,unit:"billion $",why:"The balanced-budget multiplier = 1. So GDP increases by $50 billion (the spending multiplier effect exceeds the tax multiplier effect by exactly the amount of the change)."},
+  {topic:"SOLOW",q:"If output per worker is $60,000, the depreciation rate is 5%, and the capital share is 1/3, what is the Golden Rule steady-state MPK?",answer:0.05,tolerance:0.005,unit:"",why:"At the Golden Rule: MPK = delta (assuming n=0 and no tech growth). So MPK = 0.05. This maximizes steady-state consumption per worker."},
+  {topic:"MONETARY",q:"If the money multiplier is 5 and the Fed conducts $200 billion in open market purchases, what is the maximum potential increase in the money supply?",answer:1000,tolerance:50,unit:"billion $",why:"Change in M = multiplier x change in monetary base = 5 x $200B = $1,000 billion."}
+];
+
+// Correct the Taylor Rule answer
+numericalQs[4].answer = 4.5;
+
+// -- Policy Scenarios --
+const policyScenarios = [
+  {topic:"MONETARY",scenario:"The economy enters a deep recession. Unemployment rises to 10%. Inflation falls to 0.5%. The policy rate is already at 0.25%.",question:"What policy response is appropriate and through what mechanism?",options:["Quantitative easing: buy long-term assets to lower long rates and boost asset prices","Raise interest rates to attract foreign capital","Impose trade tariffs to boost domestic production","Do nothing and wait for self-correction"],answer:0,why:"At the zero lower bound, conventional rate cuts are exhausted. QE works by purchasing long-term securities, compressing term premia, raising asset prices, lowering borrowing costs, and stimulating spending through the wealth and portfolio balance channels."},
+  {topic:"FISCAL",scenario:"A country faces a severe recession with 9% unemployment, but its debt-to-GDP ratio is already 60%. Interest rates are near zero.",question:"Should the government pursue fiscal expansion?",options:["Yes: with monetary policy constrained at ZLB, fiscal multipliers are larger and the economy needs demand stimulus","No: high debt makes fiscal expansion dangerous regardless","Yes: but only through tax cuts, not spending","No: monetary policy alone is sufficient"],answer:0,why:"At the ZLB, monetary policy is less effective, and fiscal multipliers are larger because the central bank won't offset the stimulus with rate hikes. The crowding-out effect is minimal when rates are at zero."},
+  {topic:"ADIA",scenario:"A major oil supply disruption doubles energy prices. Inflation spikes to 7% while output contracts.",question:"This is stagflation. What is the central bank's dilemma?",options:["Tightening fights inflation but deepens the recession; easing supports output but risks embedding higher inflation expectations","Simply lower rates to boost output, inflation will self-correct","Raise rates aggressively; supply shocks are always temporary","Implement price controls on energy"],answer:0,why:"Stagflation presents a policy dilemma because the AD-IA framework shows the IA line shifting up (supply shock). Fighting inflation with tighter policy further reduces output. The central bank must weigh the risk of unanchored expectations against deeper recession."},
+  {topic:"EXCHANGE",scenario:"A small open economy with a fixed exchange rate faces massive capital outflows as investors lose confidence.",question:"What must the central bank do to defend the peg?",options:["Raise domestic interest rates sharply and spend foreign reserves to buy domestic currency","Lower interest rates to stimulate the economy","Print more domestic currency","Impose expansionary fiscal policy"],answer:0,why:"To defend a fixed rate during capital flight, the central bank must make domestic assets attractive (high rates) while using reserves to buy its own currency. This is contractionary and painful, which is why many pegs collapse."},
+  {topic:"FISCAL",scenario:"The economy is booming, unemployment is 3.2% (below NAIRU of 4.5%), and inflation is rising to 4%. The government is running a large structural deficit.",question:"What fiscal policy is appropriate?",options:["Contractionary: reduce spending or raise taxes to cool the economy and reduce the deficit","Expansionary: spend more to sustain growth","Neutral: leave fiscal policy unchanged","Cut taxes to increase potential output"],answer:0,why:"With the economy overheating (below NAIRU, rising inflation), countercyclical fiscal policy means tightening. Reducing the deficit cools demand and complements any monetary tightening. Procyclical expansion would worsen inflation."},
+  {topic:"OPEN",scenario:"Country A has free capital mobility and wants to use monetary policy to fight a recession, but it also has a fixed exchange rate with Country B.",question:"What is the fundamental problem?",options:["The Mundell-Fleming trilemma: it can't have all three. It must float the currency or restrict capital flows to use monetary policy","There is no problem; all three are achievable","It should devalue the currency permanently","It should increase tariffs on Country B"],answer:0,why:"The trilemma states you can pick only 2 of 3: free capital flows, fixed exchange rate, and independent monetary policy. To ease monetary policy, Country A must either let the currency float or impose capital controls."},
+  {topic:"INFLATION",scenario:"After years of low inflation, the central bank has built strong credibility. Now a one-time supply shock pushes inflation from 2% to 5%.",question:"Should the central bank aggressively raise rates?",options:["Not necessarily: if expectations remain anchored, the shock is transitory and aggressive tightening would be costly in output terms","Yes: any inflation above target requires immediate aggressive response","No: inflation is always transitory, never respond","Cut rates to offset the supply shock's negative output effect"],answer:0,why:"With anchored expectations, a one-time supply shock does not spiral. The central bank can 'look through' temporary inflation. Aggressive tightening would cause unnecessary unemployment. However, it must monitor expectations closely."},
+  {topic:"MONETARY",scenario:"Inflation is 8% and rising. Long-term inflation expectations have risen from 2% to 5%. Wage growth is accelerating.",question:"What is the appropriate monetary policy response?",options:["Aggressive tightening: raise rates significantly to re-anchor expectations before a wage-price spiral takes hold","Moderate rate increases and forward guidance","Keep rates stable and use moral suasion","Lower rates to boost supply-side investment"],answer:0,why:"With unanchored expectations and accelerating wages, a wage-price spiral is forming. The central bank must act decisively (Volcker-style) to restore credibility. Delay makes the eventual disinflation more costly."},
+  {topic:"PHILLIPS",scenario:"Unemployment falls to 3%, well below the natural rate of 5%. Inflation is 2% and expectations are anchored at 2%.",question:"What does the Phillips Curve predict will happen?",options:["Inflation will rise above 2% as the tight labor market generates wage pressures","Inflation will fall because low unemployment means a strong economy","Nothing; anchored expectations prevent any inflation change","Unemployment will rise back to 5% automatically"],answer:0,why:"The Phillips Curve: pi = pi_e - beta(u - u_n). With u < u_n, the (u - u_n) term is negative, so pi > pi_e. Inflation rises above the 2% anchor. If sustained, expectations may also drift up."},
+  {topic:"SOLOW",scenario:"Country X has a capital-per-worker ratio far below its steady state. Country Y is at its steady state.",question:"Which country will grow faster in the near term and why?",options:["Country X: it is below steady state so its returns to capital are high and it converges (catch-up growth)","Country Y: being at steady state means it's more productive","Both grow at the same rate","Neither can grow without technology shocks"],answer:0,why:"The Solow model predicts convergence: countries below steady state grow faster because MPK is high (diminishing returns haven't fully set in). This explains rapid growth in developing economies."}
+];
+
+// -- Exam Simulator Pool (25 MC questions) --
+const examPool = [
+  {topic:"ISMP",q:"What happens to output and the real interest rate when government spending increases in the IS-MP model?",options:["Both rise","Output rises, rate falls","Both fall","Output falls, rate rises"],answer:0,why:"Higher G shifts IS right. Along the upward-sloping MP curve, the new equilibrium has higher Y and higher r."},
+  {topic:"ISMP",q:"The IS curve is derived from equilibrium in the:",options:["Goods market","Money market","Labor market","Foreign exchange market"],answer:0,why:"The IS curve represents goods market equilibrium where total spending equals output."},
+  {topic:"ADIA",q:"In the AD-IA model, what is the long-run effect of a permanent increase in the inflation target?",options:["Higher inflation at potential output","Higher output permanently","Lower unemployment permanently","No change in any variable"],answer:0,why:"Changing the target shifts the long-run equilibrium to a higher inflation rate at Y*, once expectations adjust to match the new target."},
+  {topic:"ADIA",q:"A negative supply shock in the AD-IA model leads to:",options:["Higher inflation and lower output (stagflation)","Lower inflation and higher output","Higher inflation and higher output","Lower inflation and lower output"],answer:0,why:"The IA line shifts up (higher inflation from supply costs), and the economy moves along AD to lower output."},
+  {topic:"PHILLIPS",q:"The natural rate of unemployment is also called the:",options:["NAIRU","Zero unemployment rate","Frictional rate only","Demand-deficient rate"],answer:0,why:"NAIRU (Non-Accelerating Inflation Rate of Unemployment) is the unemployment rate consistent with stable inflation."},
+  {topic:"PHILLIPS",q:"A credible disinflation policy reduces the sacrifice ratio because:",options:["Expectations adjust faster, requiring less output loss","It increases the money supply","It reduces government spending","Workers demand higher wages"],answer:0,why:"Credibility means expectations of lower inflation adjust quickly, shifting the SRPC down sooner and requiring a smaller output gap."},
+  {topic:"SOLOW",q:"In the Solow model, the transition dynamics predict that:",options:["Countries below steady state grow faster than those at steady state","All countries grow at the same rate always","Rich countries always grow faster","Growth rates are random"],answer:0,why:"Below steady state, MPK is high, so investment is productive and growth is rapid. This predicts conditional convergence."},
+  {topic:"SOLOW",q:"Total Factor Productivity (TFP) in the Solow model captures:",options:["Technology and efficiency improvements not explained by K and L","Capital accumulation","Labor force growth","Government policy"],answer:0,why:"TFP is the residual in growth accounting. It includes technology, institutions, education quality, and anything else that makes inputs more productive."},
+  {topic:"MONETARY",q:"Forward guidance is a monetary policy tool that works by:",options:["Shaping expectations about future interest rate paths","Directly setting long-term rates","Changing reserve requirements","Buying equities"],answer:0,why:"By communicating the expected path of future policy rates, the central bank influences long-term rates and economic decisions today."},
+  {topic:"MONETARY",q:"An inverted yield curve (short rates > long rates) often signals:",options:["Expectations of a future recession and rate cuts","Strong economic growth ahead","Rising inflation expectations","Increased government borrowing"],answer:0,why:"If markets expect a recession, they expect the central bank will cut rates. Lower expected future short rates pull long rates below current short rates, inverting the curve."},
+  {topic:"FISCAL",q:"The structural deficit is:",options:["The deficit adjusted for the business cycle, measuring the deficit at potential output","The total deficit including automatic stabilizers","The deficit from infrastructure spending only","Always zero at full employment"],answer:0,why:"The structural deficit removes cyclical effects to show what the deficit would be at potential output, revealing the underlying fiscal stance."},
+  {topic:"FISCAL",q:"During a liquidity trap, the fiscal multiplier is likely:",options:["Larger than normal because monetary policy cannot offset it","Smaller than normal","Exactly 1","Zero"],answer:0,why:"At the ZLB, the central bank cannot raise rates to offset fiscal stimulus, so the full multiplier effect operates without crowding out."},
+  {topic:"EXCHANGE",q:"If US inflation is persistently higher than EU inflation, PPP predicts the dollar will:",options:["Depreciate against the euro in the long run","Appreciate against the euro","Stay constant","First appreciate then depreciate"],answer:0,why:"PPP: higher inflation at home means domestic goods become relatively expensive, so the currency must depreciate to restore parity."},
+  {topic:"EXCHANGE",q:"A sudden increase in foreign demand for US assets causes the dollar to:",options:["Appreciate","Depreciate","Stay unchanged","Become more volatile with no trend"],answer:0,why:"Capital inflows to buy US assets increase demand for dollars, causing appreciation."},
+  {topic:"INFLATION",q:"Cost-push inflation is caused by:",options:["Rising input costs (oil, wages) that shift aggregate supply left","Excessive consumer demand","Central bank money printing","Government tax cuts"],answer:0,why:"Cost-push inflation originates from the supply side: higher costs of production push prices up and reduce output."},
+  {topic:"INFLATION",q:"The Fisher equation states that:",options:["Nominal rate = real rate + expected inflation","Real rate = nominal rate + expected inflation","Nominal rate = real rate x inflation","Real rate = inflation / nominal rate"],answer:0,why:"The Fisher equation: i = r + pi_e. It decomposes the nominal interest rate into the real return and compensation for expected inflation."},
+  {topic:"OPEN",q:"A current account deficit is necessarily financed by:",options:["A capital account surplus (net capital inflows)","Higher taxes","Money printing","Reduced government spending"],answer:0,why:"By the balance of payments identity: current account + capital account = 0. A current account deficit must be matched by capital inflows."},
+  {topic:"OPEN",q:"In a small open economy with perfect capital mobility and flexible rates, monetary expansion:",options:["Depreciates the currency and is very effective at boosting output","Appreciates the currency","Has no effect on output","Only affects the price level"],answer:0,why:"Lower rates cause capital outflow, depreciating the currency, boosting net exports, amplifying the monetary stimulus. (Mundell-Fleming result)"},
+  {topic:"ISMP",q:"The slope of the MP curve depends on:",options:["How aggressively the central bank responds to economic conditions","Consumer confidence","The saving rate","Government debt levels"],answer:0,why:"A steeper MP curve means the central bank raises rates more sharply in response to output/inflation changes (more hawkish rule)."},
+  {topic:"PHILLIPS",q:"If the central bank permanently keeps unemployment below the natural rate:",options:["Inflation will continuously accelerate (accelerationist hypothesis)","Inflation will stabilize at a higher level","Deflation will occur","Nothing happens to inflation"],answer:0,why:"With u persistently below u_n, inflation exceeds expectations each period. Expectations ratchet up, and inflation accelerates continuously."},
+  {topic:"SOLOW",q:"Which of the following would NOT increase steady-state output per worker?",options:["Higher population growth rate","Higher saving rate","Better technology","Lower depreciation rate"],answer:0,why:"Higher population growth (n) increases break-even investment, reducing k* and y*. The others all raise steady-state output per worker."},
+  {topic:"MONETARY",q:"Open market operations refer to:",options:["Central bank buying or selling government bonds to change the money supply","Government issuing new bonds","Banks lending to each other","Fiscal deficit monetization only"],answer:0,why:"OMOs are the primary tool: buying bonds injects reserves (expansionary), selling bonds drains reserves (contractionary)."},
+  {topic:"FISCAL",q:"Austerity during a recession is criticized because:",options:["It can create a deflationary spiral by reducing demand when the economy is already weak","It always causes hyperinflation","It increases the money supply","It strengthens the exchange rate"],answer:0,why:"Cutting spending/raising taxes in a recession reduces aggregate demand further, potentially deepening the downturn and creating a self-defeating fiscal consolidation."},
+  {topic:"EXCHANGE",q:"The J-curve effect describes:",options:["Trade balance initially worsening after depreciation before improving","Trade balance immediately improving after depreciation","Exchange rates always overshooting","Capital flows following a J-shaped pattern"],answer:0,why:"After depreciation, import prices rise immediately (worsening the balance in value terms) while export volumes adjust slowly. The trade balance traces a J shape."},
+  {topic:"OPEN",q:"The twin deficits hypothesis links:",options:["Budget deficits to current account deficits","Trade surplus to budget surplus","Inflation to unemployment","Saving to investment only"],answer:0,why:"From national accounting: (S-I) = (G-T) + NX. A budget deficit (G>T) can lead to a current account deficit if private saving doesn't rise enough to offset it."}
+];
+
+// ============================================================
+// STATE MANAGEMENT
+// ============================================================
+const LS_KEY = "xmba201_macro_study";
+
+function getDefaultState(){
+  return {
+    topicStats:{},  // {ISMP: {correct:0, total:0}, ...}
+    flashcardIndex:0,
+    flashcardSeen:[],
+    examHistory:[],
+    sessionStart: Date.now(),
+    lastBreak: Date.now(),
+    totalStudyTime:0
+  };
+}
+
+function loadState(){
+  try{
+    const s = localStorage.getItem(LS_KEY);
+    if(s) return JSON.parse(s);
+  }catch(e){}
+  return getDefaultState();
+}
+
+function saveState(){
+  try{localStorage.setItem(LS_KEY, JSON.stringify(state));}catch(e){}
+}
+
+let state = loadState();
+
+// Initialize topic stats
+Object.keys(TOPICS).forEach(t=>{
+  if(!state.topicStats[t]) state.topicStats[t] = {correct:0, total:0};
+});
+
+function recordAnswer(topic, correct){
+  if(!state.topicStats[topic]) state.topicStats[topic] = {correct:0, total:0};
+  state.topicStats[topic].total++;
+  if(correct) state.topicStats[topic].correct++;
+  saveState();
+}
+
+function getTopicAccuracy(topic){
+  const s = state.topicStats[topic];
+  if(!s || s.total === 0) return 0;
+  return Math.round((s.correct / s.total) * 100);
+}
+
+function getWeakTopics(){
+  return Object.keys(TOPICS).sort((a,b)=> getTopicAccuracy(a) - getTopicAccuracy(b));
+}
+
+// Spaced repetition: sort questions to surface weak topics first
+function sortByWeakness(arr){
+  const weak = getWeakTopics();
+  return [...arr].sort((a,b)=> weak.indexOf(a.topic) - weak.indexOf(b.topic));
+}
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i = a.length-1; i > 0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+// ============================================================
+// BREAK REMINDER
+// ============================================================
+let breakInterval = null;
+function startBreakTimer(){
+  if(breakInterval) clearInterval(breakInterval);
+  state.lastBreak = Date.now();
+  breakInterval = setInterval(()=>{
+    if(Date.now() - state.lastBreak >= 50*60*1000){
+      document.getElementById('breakOverlay').classList.remove('hidden');
+    }
+  }, 30000);
+}
+function dismissBreak(){
+  document.getElementById('breakOverlay').classList.add('hidden');
+  state.lastBreak = Date.now();
+}
+startBreakTimer();
+
+// ============================================================
+// RENDERING ENGINE
+// ============================================================
+const app = document.getElementById('app');
+
+function render(html){ app.innerHTML = html; }
+
+function renderHome(){
+  const weakTopics = getWeakTopics();
+  const totalAnswered = Object.values(state.topicStats).reduce((s,t)=>s+t.total,0);
+  const totalCorrect = Object.values(state.topicStats).reduce((s,t)=>s+t.correct,0);
+  const overallPct = totalAnswered > 0 ? Math.round(totalCorrect/totalAnswered*100) : 0;
+
+  let topicRows = Object.keys(TOPICS).map(t=>{
+    const pct = getTopicAccuracy(t);
+    const total = state.topicStats[t].total;
+    const color = pct >= 80 ? 'var(--green)' : pct >= 50 ? 'var(--orange)' : total === 0 ? 'var(--gray)' : 'var(--red)';
+    return `<div class="topic-row">
+      <span class="topic-name">${TOPICS[t]}</span>
+      <span class="topic-pct" style="color:${color}">${total > 0 ? pct+'%' : 'New'} <span style="font-weight:400;color:var(--gray);font-size:.75rem">(${total})</span></span>
+    </div>`;
+  }).join('');
+
+  render(`
+    <header>
+      <h1>XMBA 201 Macroeconomics</h1>
+      <p class="subtitle">UC Berkeley Haas Executive MBA — Final Exam Prep</p>
+    </header>
+
+    <div class="card">
+      <h2>Your 4-Hour Study Plan</h2>
+      <div class="study-plan-step"><div class="step-time">0:00-0:30</div><div class="step-info"><strong>Concept Review</strong> — Flip through flashcards on all key models. Build the mental framework first.</div></div>
+      <div class="study-plan-step"><div class="step-time">0:30-1:00</div><div class="step-info"><strong>Lightning Quiz</strong> — Rapid-fire MC to activate recall. Focus on weak topics surfaced by the app.</div></div>
+      <div class="study-plan-step"><div class="step-time">1:00-1:20</div><div class="step-info"><strong>True/False Myth Buster</strong> — Identify and correct common misconceptions before the exam.</div></div>
+      <div class="study-plan-step"><div class="step-time">1:20-1:50</div><div class="step-info"><strong>Numerical Challenge</strong> — Practice calculations: multipliers, Solow steady state, Phillips Curve, Taylor Rule.</div></div>
+      <div class="study-plan-step"><div class="step-time">1:50-1:55</div><div class="step-info"><strong>Break</strong> — Walk, hydrate, reset.</div></div>
+      <div class="study-plan-step"><div class="step-time">1:55-2:30</div><div class="step-info"><strong>Policy Scenarios</strong> — Apply your knowledge to real-world cases. Think through transmission mechanisms.</div></div>
+      <div class="study-plan-step"><div class="step-time">2:30-4:00</div><div class="step-info"><strong>Exam Simulator</strong> — Full 25-question mock exam under timed conditions. Review mistakes after.</div></div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <h2 style="margin:0">Mastery by Topic</h2>
+        <span style="font-size:.85rem;font-weight:600;color:var(--primary)">${overallPct}% overall (${totalAnswered} Qs)</span>
+      </div>
+      ${topicRows}
+      <button class="btn btn-outline btn-sm" style="margin-top:12px" onclick="if(confirm('Reset all progress?')){localStorage.removeItem('${LS_KEY}');state=getDefaultState();saveState();renderHome()}">Reset Progress</button>
+    </div>
+
+    <h2 style="margin:14px 0 8px">Study Modes</h2>
+    <div class="grid-2">
+      <div class="card mode-card" onclick="startFlashcards()">
+        <div class="mode-icon">📇</div>
+        <div class="mode-label">Concept Review</div>
+        <div class="mode-desc">${flashcards.length} flashcards across all models</div>
+      </div>
+      <div class="card mode-card" onclick="startLightning()">
+        <div class="mode-icon">⚡</div>
+        <div class="mode-label">Lightning Quiz</div>
+        <div class="mode-desc">60-sec rapid-fire MC</div>
+      </div>
+      <div class="card mode-card" onclick="startTF()">
+        <div class="mode-icon">🎯</div>
+        <div class="mode-label">True/False Myth Buster</div>
+        <div class="mode-desc">${tfQuestions.length} common exam traps</div>
+      </div>
+      <div class="card mode-card" onclick="startNumerical()">
+        <div class="mode-icon">🔢</div>
+        <div class="mode-label">Numerical Challenge</div>
+        <div class="mode-desc">${numericalQs.length} plug-and-chug problems</div>
+      </div>
+      <div class="card mode-card" onclick="startPolicy()">
+        <div class="mode-icon">🏛️</div>
+        <div class="mode-label">Policy Scenario</div>
+        <div class="mode-desc">${policyScenarios.length} real-world cases</div>
+      </div>
+      <div class="card mode-card" onclick="startExam()">
+        <div class="mode-icon">📝</div>
+        <div class="mode-label">Exam Simulator</div>
+        <div class="mode-desc">25 Qs, 90-min timer, scored by topic</div>
+      </div>
+    </div>
+  `);
+}
+
+// ============================================================
+// MODE 1: FLASHCARDS
+// ============================================================
+let fcCards, fcIndex, fcFlipped;
+
+function startFlashcards(){
+  fcCards = sortByWeakness(shuffle(flashcards));
+  fcIndex = 0;
+  fcFlipped = false;
+  renderFlashcard();
+}
+
+function renderFlashcard(){
+  if(fcIndex >= fcCards.length){ renderHome(); return; }
+  const c = fcCards[fcIndex];
+  const side = fcFlipped ? 'Answer' : 'Question';
+  const text = fcFlipped ? c.back : c.front;
+  render(`
+    <div class="nav-row">
+      <button class="back-btn" onclick="renderHome()">← Back</button>
+      <span class="question-num">${fcIndex+1} / ${fcCards.length}</span>
+    </div>
+    <div class="tag">${TOPICS[c.topic]}</div>
+    <div class="card flashcard" onclick="fcFlipped=!fcFlipped;renderFlashcard()">
+      <div class="label">${side}</div>
+      <div class="content">${text}</div>
+      <div class="hint">${fcFlipped ? '' : 'Tap to flip'}</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${(fcIndex/fcCards.length)*100}%;background:var(--accent)"></div></div>
+    <div style="display:flex;gap:10px;margin-top:10px">
+      ${fcFlipped ? `
+        <button class="btn btn-red" style="flex:1" onclick="recordAnswer('${c.topic}',false);fcIndex++;fcFlipped=false;renderFlashcard()">Didn't Know</button>
+        <button class="btn btn-green" style="flex:1" onclick="recordAnswer('${c.topic}',true);fcIndex++;fcFlipped=false;renderFlashcard()">Got It</button>
+      ` : `
+        <button class="btn btn-outline" style="flex:1" onclick="fcFlipped=true;renderFlashcard()">Show Answer</button>
+      `}
+    </div>
+  `);
+}
+
+// ============================================================
+// MODE 2: LIGHTNING QUIZ
+// ============================================================
+let lqQuestions, lqIndex, lqTimer, lqTimeLeft, lqScore, lqAnswered;
+
+function startLightning(){
+  lqQuestions = sortByWeakness(shuffle(lightningQuiz));
+  lqIndex = 0;
+  lqScore = 0;
+  lqAnswered = false;
+  lqTimeLeft = 60;
+  renderLightningQ();
+  lqTimer = setInterval(()=>{
+    lqTimeLeft--;
+    updateLightningTimer();
+    if(lqTimeLeft <= 0){
+      clearInterval(lqTimer);
+      renderLightningResults();
+    }
+  }, 1000);
+}
+
+function updateLightningTimer(){
+  const bar = document.getElementById('lq-bar');
+  const time = document.getElementById('lq-time');
+  if(bar) bar.style.width = (lqTimeLeft/60*100)+'%';
+  if(bar) bar.className = 'bar-fill' + (lqTimeLeft <= 15 ? ' danger' : lqTimeLeft <= 30 ? ' warning' : '');
+  if(time) time.textContent = lqTimeLeft + 's';
+}
+
+function renderLightningQ(){
+  if(lqIndex >= lqQuestions.length){clearInterval(lqTimer);renderLightningResults();return;}
+  lqAnswered = false;
+  const q = lqQuestions[lqIndex];
+  const optionsHtml = q.options.map((o,i)=>
+    `<button class="option-btn" id="lq-opt-${i}" onclick="answerLightning(${i})">${String.fromCharCode(65+i)}. ${o}</button>`
+  ).join('');
+
+  render(`
+    <div class="nav-row">
+      <button class="back-btn" onclick="clearInterval(lqTimer);renderHome()">← Back</button>
+      <span class="question-num">Q${lqIndex+1} | Score: ${lqScore}</span>
+    </div>
+    <div class="timer-bar">
+      <span id="lq-time">${lqTimeLeft}s</span>
+      <div class="bar"><div class="bar-fill" id="lq-bar" style="width:${lqTimeLeft/60*100}%"></div></div>
+    </div>
+    <div class="tag">${TOPICS[q.topic]}</div>
+    <div class="card">
+      <p style="font-size:.95rem;margin-bottom:14px;font-weight:500">${q.q}</p>
+      ${optionsHtml}
+      <div id="lq-explanation"></div>
+    </div>
+  `);
+}
+
+function answerLightning(idx){
+  if(lqAnswered) return;
+  lqAnswered = true;
+  const q = lqQuestions[lqIndex];
+  const correct = idx === q.answer;
+  if(correct) lqScore++;
+  recordAnswer(q.topic, correct);
+
+  for(let i=0;i<q.options.length;i++){
+    const btn = document.getElementById('lq-opt-'+i);
+    btn.classList.add('disabled');
+    if(i === q.answer) btn.classList.add('correct');
+    else if(i === idx && !correct) btn.classList.add('wrong');
+  }
+
+  const expClass = correct ? 'correct-exp' : 'wrong-exp';
+  document.getElementById('lq-explanation').innerHTML = `<div class="explanation ${expClass}">${correct ? '✓ Correct!' : '✗ Incorrect.'} ${q.why}</div>`;
+
+  setTimeout(()=>{lqIndex++;renderLightningQ();}, correct ? 1200 : 2500);
+}
+
+function renderLightningResults(){
+  const total = lqIndex;
+  const pct = total > 0 ? Math.round(lqScore/total*100) : 0;
+  render(`
+    <div class="nav-row"><button class="back-btn" onclick="renderHome()">← Back</button></div>
+    <div class="card" style="text-align:center">
+      <h2>Lightning Quiz Results</h2>
+      <div class="score-big">${lqScore}/${total}</div>
+      <div class="score-label">${pct}% correct in 60 seconds</div>
+      <button class="btn btn-primary" style="margin-top:16px" onclick="startLightning()">Try Again</button>
+      <button class="btn btn-outline" style="margin-top:8px" onclick="renderHome()">Back to Menu</button>
+    </div>
+  `);
+}
+
+// ============================================================
+// MODE 3: TRUE/FALSE MYTH BUSTER
+// ============================================================
+let tfQs, tfIdx, tfDone;
+
+function startTF(){
+  tfQs = sortByWeakness(shuffle(tfQuestions));
+  tfIdx = 0;
+  tfDone = false;
+  renderTFQ();
+}
+
+function renderTFQ(){
+  if(tfIdx >= tfQs.length){renderHome();return;}
+  tfDone = false;
+  const q = tfQs[tfIdx];
+  render(`
+    <div class="nav-row">
+      <button class="back-btn" onclick="renderHome()">← Back</button>
+      <span class="question-num">${tfIdx+1} / ${tfQs.length}</span>
+    </div>
+    <div class="tag">${TOPICS[q.topic]}</div>
+    <div class="card">
+      <p style="font-size:.95rem;margin-bottom:16px;font-weight:500">"${q.statement}"</p>
+      <div class="flex-row">
+        <button class="tf-btn" id="tf-true" onclick="answerTF(true)">TRUE</button>
+        <button class="tf-btn" id="tf-false" onclick="answerTF(false)">FALSE</button>
+      </div>
+      <div id="tf-explanation"></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${(tfIdx/tfQs.length)*100}%;background:var(--accent)"></div></div>
+  `);
+}
+
+function answerTF(ans){
+  if(tfDone) return;
+  tfDone = true;
+  const q = tfQs[tfIdx];
+  const correct = ans === q.answer;
+  recordAnswer(q.topic, correct);
+
+  const trueBtn = document.getElementById('tf-true');
+  const falseBtn = document.getElementById('tf-false');
+
+  if(q.answer === true) trueBtn.classList.add('correct'); else falseBtn.classList.add('correct');
+  if(!correct){(ans === true ? trueBtn : falseBtn).classList.add('wrong');}
+
+  const expClass = correct ? 'correct-exp' : 'wrong-exp';
+  document.getElementById('tf-explanation').innerHTML = `
+    <div class="explanation ${expClass}" style="margin-top:14px">
+      ${correct ? '✓ Correct!' : '✗ Incorrect. The answer is '+(q.answer?'TRUE':'FALSE')+'.'} ${q.why}
+    </div>
+    <button class="btn btn-primary btn-block" style="margin-top:10px" onclick="tfIdx++;renderTFQ()">Next</button>
+  `;
+}
+
+// ============================================================
+// MODE 4: NUMERICAL CHALLENGE
+// ============================================================
+let numQs, numIdx, numDone;
+
+function startNumerical(){
+  numQs = sortByWeakness(shuffle(numericalQs));
+  numIdx = 0;
+  numDone = false;
+  renderNumQ();
+}
+
+function renderNumQ(){
+  if(numIdx >= numQs.length){renderHome();return;}
+  numDone = false;
+  const q = numQs[numIdx];
+  render(`
+    <div class="nav-row">
+      <button class="back-btn" onclick="renderHome()">← Back</button>
+      <span class="question-num">${numIdx+1} / ${numQs.length}</span>
+    </div>
+    <div class="tag">${TOPICS[q.topic]}</div>
+    <div class="card">
+      <p style="font-size:.95rem;margin-bottom:6px;font-weight:500">${q.q}</p>
+      ${q.hint ? `<p style="font-size:.8rem;color:var(--gray);margin-bottom:12px">Hint: ${q.hint}</p>` : ''}
+      <div style="display:flex;gap:10px;align-items:center">
+        <input class="input-field" type="number" step="any" id="num-input" placeholder="Your answer${q.unit ? ' ('+q.unit+')' : ''}" onkeydown="if(event.key==='Enter')checkNum()">
+        <button class="btn btn-primary" onclick="checkNum()">Check</button>
+      </div>
+      <div id="num-explanation"></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${(numIdx/numQs.length)*100}%;background:var(--accent)"></div></div>
+  `);
+  setTimeout(()=>document.getElementById('num-input')?.focus(),100);
+}
+
+function checkNum(){
+  if(numDone) return;
+  numDone = true;
+  const q = numQs[numIdx];
+  const val = parseFloat(document.getElementById('num-input').value);
+  const correct = !isNaN(val) && Math.abs(val - q.answer) <= q.tolerance;
+  recordAnswer(q.topic, correct);
+
+  const expClass = correct ? 'correct-exp' : 'wrong-exp';
+  document.getElementById('num-explanation').innerHTML = `
+    <div class="explanation ${expClass}" style="margin-top:12px">
+      ${correct ? '✓ Correct!' : '✗ Incorrect. The answer is '+q.answer+(q.unit?' '+q.unit:'')+'.'} ${q.why}
+    </div>
+    <button class="btn btn-primary btn-block" style="margin-top:10px" onclick="numIdx++;renderNumQ()">Next</button>
+  `;
+}
+
+// ============================================================
+// MODE 5: POLICY SCENARIO
+// ============================================================
+let polQs, polIdx, polDone;
+
+function startPolicy(){
+  polQs = sortByWeakness(shuffle(policyScenarios));
+  polIdx = 0;
+  polDone = false;
+  renderPolQ();
+}
+
+function renderPolQ(){
+  if(polIdx >= polQs.length){renderHome();return;}
+  polDone = false;
+  const q = polQs[polIdx];
+  const optHtml = q.options.map((o,i)=>
+    `<button class="option-btn" id="pol-opt-${i}" onclick="answerPol(${i})">${String.fromCharCode(65+i)}. ${o}</button>`
+  ).join('');
+
+  render(`
+    <div class="nav-row">
+      <button class="back-btn" onclick="renderHome()">← Back</button>
+      <span class="question-num">${polIdx+1} / ${polQs.length}</span>
+    </div>
+    <div class="tag">${TOPICS[q.topic]}</div>
+    <div class="card">
+      <div class="scenario-text">${q.scenario}</div>
+      <p style="font-size:.95rem;margin-bottom:14px;font-weight:500">${q.question}</p>
+      ${optHtml}
+      <div id="pol-explanation"></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${(polIdx/polQs.length)*100}%;background:var(--accent)"></div></div>
+  `);
+}
+
+function answerPol(idx){
+  if(polDone) return;
+  polDone = true;
+  const q = polQs[polIdx];
+  const correct = idx === q.answer;
+  recordAnswer(q.topic, correct);
+
+  for(let i=0;i<q.options.length;i++){
+    const btn = document.getElementById('pol-opt-'+i);
+    btn.classList.add('disabled');
+    if(i === q.answer) btn.classList.add('correct');
+    else if(i === idx && !correct) btn.classList.add('wrong');
+  }
+
+  const expClass = correct ? 'correct-exp' : 'wrong-exp';
+  document.getElementById('pol-explanation').innerHTML = `
+    <div class="explanation ${expClass}">${correct ? '✓ Correct!' : '✗ Incorrect.'} ${q.why}</div>
+    <button class="btn btn-primary btn-block" style="margin-top:10px" onclick="polIdx++;renderPolQ()">Next</button>
+  `;
+}
+
+// ============================================================
+// MODE 6: EXAM SIMULATOR
+// ============================================================
+let examQs, examIdx, examAnswers, examTimer, examTimeLeft, examStarted;
+
+function startExam(){
+  examQs = shuffle(examPool).slice(0,25);
+  examIdx = 0;
+  examAnswers = new Array(25).fill(null);
+  examTimeLeft = 90*60;
+  examStarted = false;
+
+  render(`
+    <div class="nav-row"><button class="back-btn" onclick="renderHome()">← Back</button></div>
+    <div class="card" style="text-align:center">
+      <h2>Exam Simulator</h2>
+      <p style="color:var(--gray);margin-bottom:16px">25 multiple-choice questions. 90-minute timer. Your score will be broken down by topic at the end.</p>
+      <button class="btn btn-primary" onclick="beginExam()">Start Exam</button>
+    </div>
+  `);
+}
+
+function beginExam(){
+  examStarted = true;
+  examTimer = setInterval(()=>{
+    examTimeLeft--;
+    updateExamTimer();
+    if(examTimeLeft <= 0){
+      clearInterval(examTimer);
+      gradeExam();
+    }
+  },1000);
+  renderExamQ();
+}
+
+function updateExamTimer(){
+  const el = document.getElementById('exam-timer');
+  if(!el) return;
+  const m = Math.floor(examTimeLeft/60);
+  const s = examTimeLeft%60;
+  el.textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  el.style.color = examTimeLeft <= 300 ? 'var(--red)' : 'var(--primary)';
+}
+
+function renderExamQ(){
+  if(examIdx >= examQs.length){gradeExam();return;}
+  const q = examQs[examIdx];
+  const m = Math.floor(examTimeLeft/60);
+  const s = examTimeLeft%60;
+
+  const optHtml = q.options.map((o,i)=>{
+    const selected = examAnswers[examIdx] === i ? 'border-color:var(--accent);background:var(--accent-light)' : '';
+    return `<button class="option-btn" style="${selected}" onclick="examSelect(${i})">${String.fromCharCode(65+i)}. ${o}</button>`;
+  }).join('');
+
+  // Question nav dots
+  const dots = examQs.map((_,i)=>{
+    const filled = examAnswers[i] !== null;
+    const current = i === examIdx;
+    const bg = current ? 'var(--accent)' : filled ? 'var(--primary)' : 'var(--gray-light)';
+    const border = current ? '2px solid var(--accent)' : 'none';
+    return `<div onclick="examIdx=${i};renderExamQ()" style="width:20px;height:20px;border-radius:50%;background:${bg};cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:${filled||current?'#fff':'var(--gray)'};border:${border}">${i+1}</div>`;
+  }).join('');
+
+  render(`
+    <div class="nav-row">
+      <button class="back-btn" onclick="if(confirm('End exam?')){clearInterval(examTimer);renderHome()}">← End Exam</button>
+      <span id="exam-timer" style="font-weight:700;font-size:.95rem">${m}:${s.toString().padStart(2,'0')}</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px">${dots}</div>
+    <div class="tag">${TOPICS[q.topic]}</div>
+    <div class="card">
+      <p style="font-size:.95rem;margin-bottom:14px;font-weight:500">Q${examIdx+1}. ${q.q}</p>
+      ${optHtml}
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="btn btn-outline" style="flex:1" onclick="examIdx=Math.max(0,examIdx-1);renderExamQ()" ${examIdx===0?'disabled':''}>Previous</button>
+      ${examIdx < examQs.length - 1 ?
+        `<button class="btn btn-primary" style="flex:1" onclick="examIdx++;renderExamQ()">Next</button>` :
+        `<button class="btn btn-green" style="flex:1" onclick="gradeExam()">Submit Exam</button>`
+      }
+    </div>
+  `);
+}
+
+function examSelect(idx){
+  examAnswers[examIdx] = idx;
+  renderExamQ();
+}
+
+function gradeExam(){
+  clearInterval(examTimer);
+  let totalCorrect = 0;
+  const topicBreakdown = {};
+
+  examQs.forEach((q,i)=>{
+    if(!topicBreakdown[q.topic]) topicBreakdown[q.topic] = {correct:0, total:0};
+    topicBreakdown[q.topic].total++;
+    const correct = examAnswers[i] === q.answer;
+    if(correct){totalCorrect++;topicBreakdown[q.topic].correct++;}
+    recordAnswer(q.topic, correct);
+  });
+
+  const pct = Math.round(totalCorrect/examQs.length*100);
+  const grade = pct >= 93 ? 'A' : pct >= 90 ? 'A-' : pct >= 87 ? 'B+' : pct >= 83 ? 'B' : pct >= 80 ? 'B-' : pct >= 77 ? 'C+' : 'C';
+  const gradeColor = pct >= 90 ? 'var(--green)' : pct >= 80 ? 'var(--orange)' : 'var(--red)';
+
+  let topicHtml = Object.keys(topicBreakdown).map(t=>{
+    const b = topicBreakdown[t];
+    const p = Math.round(b.correct/b.total*100);
+    const c = p >= 80 ? 'var(--green)' : p >= 50 ? 'var(--orange)' : 'var(--red)';
+    return `<div class="topic-row"><span class="topic-name">${TOPICS[t]}</span><span class="topic-pct" style="color:${c}">${b.correct}/${b.total} (${p}%)</span></div>`;
+  }).join('');
+
+  // Review section
+  let reviewHtml = examQs.map((q,i)=>{
+    const correct = examAnswers[i] === q.answer;
+    const yourAnswer = examAnswers[i] !== null ? q.options[examAnswers[i]] : 'Not answered';
+    const icon = correct ? '✓' : '✗';
+    const color = correct ? 'var(--green)' : 'var(--red)';
+    return `<div style="padding:10px 0;border-bottom:1px solid var(--gray-light)">
+      <div style="display:flex;gap:8px;align-items:start">
+        <span style="color:${color};font-weight:700;font-size:1.1rem">${icon}</span>
+        <div>
+          <p style="font-size:.88rem;font-weight:500">Q${i+1}. ${q.q}</p>
+          <p style="font-size:.82rem;color:var(--gray);margin-top:4px">Your answer: ${yourAnswer}</p>
+          ${!correct ? `<p style="font-size:.82rem;color:var(--green);margin-top:2px">Correct: ${q.options[q.answer]}</p>` : ''}
+          ${!correct ? `<div class="explanation wrong-exp" style="margin-top:6px;font-size:.82rem">${q.why}</div>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  render(`
+    <div class="nav-row"><button class="back-btn" onclick="renderHome()">← Back</button></div>
+    <div class="card" style="text-align:center">
+      <h2>Exam Results</h2>
+      <div class="score-big" style="color:${gradeColor}">${totalCorrect}/25</div>
+      <div class="score-label">${pct}% — Projected Grade: <strong style="color:${gradeColor}">${grade}</strong></div>
+      ${pct >= 90 ? '<p style="margin-top:8px;color:var(--green);font-weight:500">You\'re on track for that A-! Keep it up.</p>' : '<p style="margin-top:8px;color:var(--orange);font-weight:500">Review weak topics below and try again.</p>'}
+    </div>
+    <div class="card">
+      <h2>Score by Topic</h2>
+      ${topicHtml}
+    </div>
+    <div class="card">
+      <h2>Full Review</h2>
+      ${reviewHtml}
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="btn btn-primary" style="flex:1" onclick="startExam()">Retake Exam</button>
+      <button class="btn btn-outline" style="flex:1" onclick="renderHome()">Back to Menu</button>
+    </div>
+  `);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+renderHome();
+</script>
+</body>
+</html>
