@@ -744,16 +744,7 @@ function startLightning(){
   lqIndex = 0;
   lqScore = 0;
   lqAnswered = false;
-  lqTimeLeft = 60;
   renderLightningQ();
-  lqTimer = setInterval(()=>{
-    lqTimeLeft--;
-    updateLightningTimer();
-    if(lqTimeLeft <= 0){
-      clearInterval(lqTimer);
-      renderLightningResults();
-    }
-  }, 1000);
 }
 
 function updateLightningTimer(){
@@ -766,7 +757,28 @@ function updateLightningTimer(){
 
 function renderLightningQ(){
   if(lqIndex >= lqQuestions.length){clearInterval(lqTimer);renderLightningResults();return;}
+  clearInterval(lqTimer);
   lqAnswered = false;
+  lqTimeLeft = 60;
+  lqTimer = setInterval(()=>{
+    lqTimeLeft--;
+    updateLightningTimer();
+    if(lqTimeLeft <= 0){
+      clearInterval(lqTimer);
+      if(!lqAnswered){
+        lqAnswered = true;
+        recordAnswer(lqQuestions[lqIndex].topic, false);
+        const expEl = document.getElementById('lq-explanation');
+        if(expEl) expEl.innerHTML = `<div class="explanation wrong-exp">⏱ Time's up! ${lqQuestions[lqIndex].why}</div>`;
+        for(let i=0;i<lqQuestions[lqIndex].options.length;i++){
+          const btn = document.getElementById('lq-opt-'+i);
+          if(btn) btn.classList.add('disabled');
+          if(i === lqQuestions[lqIndex].answer && btn) btn.classList.add('correct');
+        }
+        setTimeout(()=>{lqIndex++;renderLightningQ();}, 2500);
+      }
+    }
+  }, 1000);
   const q = lqQuestions[lqIndex];
   const optionsHtml = q.options.map((o,i)=>
     `<button class="option-btn" id="lq-opt-${i}" onclick="answerLightning(${i})">${String.fromCharCode(65+i)}. ${o}</button>`
@@ -793,6 +805,7 @@ function renderLightningQ(){
 function answerLightning(idx){
   if(lqAnswered) return;
   lqAnswered = true;
+  clearInterval(lqTimer);
   const q = lqQuestions[lqIndex];
   const correct = idx === q.answer;
   if(correct) lqScore++;
@@ -819,7 +832,7 @@ function renderLightningResults(){
     <div class="card" style="text-align:center">
       <h2>Lightning Quiz Results</h2>
       <div class="score-big">${lqScore}/${total}</div>
-      <div class="score-label">${pct}% correct in 60 seconds</div>
+      <div class="score-label">${pct}% correct (60s per question)</div>
       <button class="btn btn-primary" style="margin-top:16px" onclick="startLightning()">Try Again</button>
       <button class="btn btn-outline" style="margin-top:8px" onclick="renderHome()">Back to Menu</button>
     </div>
