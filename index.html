@@ -86,6 +86,17 @@ header{text-align:center;padding:20px 0 10px}
 .tf-btn.wrong{border-color:var(--red);background:var(--red-light)}
 .flex-row{display:flex;gap:10px}
 .tag{display:inline-block;padding:2px 8px;background:var(--accent-light);color:var(--accent);border-radius:4px;font-size:.72rem;font-weight:600;margin-bottom:8px}
+.review-topic-card{cursor:pointer;transition:transform .1s,box-shadow .15s;border:2px solid transparent;display:flex;align-items:center;gap:14px}
+.review-topic-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1);border-color:var(--accent)}
+.review-topic-num{width:32px;height:32px;border-radius:50%;background:var(--accent-light);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0}
+.review-section{margin-bottom:20px}
+.review-section-heading{font-size:.95rem;font-weight:700;color:var(--primary);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--accent-light)}
+.review-section-content{font-size:.9rem;line-height:1.7;white-space:pre-line;color:var(--text)}
+.review-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.review-nav-dot{padding:4px 10px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--card);transition:all .15s}
+.review-nav-dot:hover{border-color:var(--accent);color:var(--accent)}
+.review-nav-dot.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.review-nav-dot.visited{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
 </style>
 </head>
 <body>
@@ -115,6 +126,113 @@ const TOPICS = {
   EXCHANGE: "Exchange Rates",
   INFLATION: "Inflation Expectations",
   OPEN: "Open Economy Macro"
+};
+
+// -- Topic Reviews (structured content for each model) --
+const topicReviews = {
+  ISMP: {
+    title: "IS-MP Model",
+    sections: [
+      {heading: "Core Idea", content: "The IS-MP model determines short-run output (Y) and the real interest rate (r). It replaces the LM curve with an explicit monetary policy rule, reflecting how modern central banks set interest rates rather than targeting the money supply."},
+      {heading: "IS Curve", content: "Shows goods market equilibrium: combinations of Y and r where planned expenditure equals output. Slopes downward because lower r stimulates investment and consumption, raising Y.\n\nKey equation: Y = C(Y-T) + I(r) + G + NX"},
+      {heading: "MP Curve", content: "Represents the central bank's reaction function. Typically upward-sloping or flat: the central bank raises r when output (or inflation) rises.\n\nSimple form: r = r* + policy response to conditions"},
+      {heading: "Shifts", content: "IS shifts right: higher G, lower T, increased confidence, wealth effects, stronger exports.\nIS shifts left: fiscal contraction, confidence drops, negative wealth shocks.\n\nMP shifts up: hawkish policy change (central bank raises r at every output level).\nMP shifts down: dovish shift."},
+      {heading: "Equilibrium", content: "The intersection of IS and MP gives short-run equilibrium Y and r. A rightward IS shift along an upward-sloping MP curve raises both output and the real interest rate."},
+      {heading: "Key Intuition", content: "Fiscal expansion shifts IS right, raising Y but also r (partial crowding out via the MP curve). The steeper the MP curve (more hawkish central bank), the more crowding out occurs and the less output responds."}
+    ]
+  },
+  ADIA: {
+    title: "AD-IA Model",
+    sections: [
+      {heading: "Core Idea", content: "The AD-IA framework shows how output and inflation evolve over time. It bridges the short run (IS-MP) to medium-run adjustment. The AD curve comes from IS-MP; the IA line captures inflation persistence."},
+      {heading: "AD Curve", content: "Derived from IS-MP: shows the negative relationship between inflation (pi) and output (Y). Higher inflation causes the central bank to raise r (MP response), which reduces Y along IS.\n\nSlopes downward in (Y, pi) space."},
+      {heading: "IA Line", content: "A horizontal line at the current inflation rate. Reflects adaptive expectations: inflation today depends on inflation yesterday. Shifts up when actual inflation exceeds expected; shifts down when below.\n\nThis captures inflation persistence and inertia."},
+      {heading: "Short-Run vs. Long-Run", content: "Short-run equilibrium: where AD intersects IA. Output can deviate from potential.\n\nLong-run equilibrium: AD intersects IA at potential output (Y*). Inflation is stable and equals expected inflation. No output gap."},
+      {heading: "Demand Shocks", content: "Positive demand shock: AD shifts right. Output rises above Y*, inflation rises. Over time, IA shifts up, output returns to Y* at higher inflation.\n\nNegative demand shock: AD shifts left. Output falls, inflation gradually declines. IA drifts down until equilibrium is restored."},
+      {heading: "Supply Shocks", content: "Negative supply shock (oil spike): IA shifts up. Stagflation: higher inflation, lower output. Central bank faces a dilemma: tighten to fight inflation (deeper recession) or accommodate (risk embedding higher expectations).\n\nPositive supply shock: IA shifts down. Lower inflation, higher output. The easy case."},
+      {heading: "Key Intuition", content: "Demand shocks move the economy along the IA line in the short run; supply shocks shift the IA line itself. The economy self-corrects over time as inflation expectations adjust, but the speed depends on how quickly expectations adapt."}
+    ]
+  },
+  PHILLIPS: {
+    title: "Phillips Curve",
+    sections: [
+      {heading: "Core Equation", content: "pi = pi_e - beta(u - u_n) + v\n\npi = actual inflation\npi_e = expected inflation\nu = actual unemployment\nu_n = natural rate (NAIRU)\nbeta = slope (sensitivity of inflation to labor market slack)\nv = supply shock term"},
+      {heading: "Short-Run Tradeoff", content: "For given expectations (pi_e fixed), lower unemployment is associated with higher inflation. This is the short-run Phillips Curve (SRPC), which slopes downward in (u, pi) space."},
+      {heading: "Long-Run Vertical", content: "In the long run, expectations adjust to match actual inflation. The long-run Phillips Curve (LRPC) is vertical at u_n. No permanent tradeoff exists: you can't buy permanently lower unemployment with higher inflation."},
+      {heading: "Expectations Shifts", content: "When pi_e rises, the entire SRPC shifts up. At every unemployment rate, inflation is higher. This is why sustained expansionary policy leads to accelerating inflation, not just higher inflation."},
+      {heading: "Sacrifice Ratio", content: "The cumulative output (or unemployment) cost of reducing inflation by 1 percentage point. With adaptive expectations and slow adjustment, the sacrifice ratio is high. With credible policy and rational expectations, it can be lower."},
+      {heading: "Key Intuition", content: "u < u_n: inflation rises above expectations (overheating).\nu > u_n: inflation falls below expectations (slack).\nu = u_n: inflation equals expectations (stable).\n\nThe Phillips Curve is the mechanism through which output gaps translate into inflation changes in the AD-IA model."}
+    ]
+  },
+  SOLOW: {
+    title: "Solow Growth Model",
+    sections: [
+      {heading: "Core Equations", content: "Production: Y = A * F(K, L), typically Y = A * K^alpha * L^(1-alpha)\n\nPer worker: y = A * k^alpha, where k = K/L\n\nCapital accumulation: dk = sy - (n + delta)k\n\nSteady state: sy* = (n + delta)k*"},
+      {heading: "Steady State", content: "The economy converges to a steady state where investment exactly replaces depreciated capital and equips new workers. At k*, output per worker (y*) is constant.\n\nHigher saving rate (s): raises k* and y* (level effect, not growth effect).\nHigher population growth (n): lowers k* and y* (more workers to equip)."},
+      {heading: "Convergence", content: "Countries below their steady state grow faster (high MPK, diminishing returns haven't fully kicked in). This predicts conditional convergence: countries with similar fundamentals converge to similar income levels."},
+      {heading: "Golden Rule", content: "The saving rate that maximizes steady-state consumption per worker. At the Golden Rule k:\n\nMPK = delta + n\n\nConsumption is maximized when the marginal product of capital equals the break-even rate."},
+      {heading: "Role of Technology", content: "In the basic model, only TFP growth (A) drives sustained per-capita growth. Capital accumulation alone leads to a steady state due to diminishing returns. TFP captures technology, institutions, education, and other efficiency gains."},
+      {heading: "Growth Accounting", content: "Growth in Y = growth in A + alpha * growth in K + (1-alpha) * growth in L\n\nThe Solow residual (TFP growth) is the portion of output growth not explained by factor accumulation. Often accounts for the majority of growth in developed economies."},
+      {heading: "Key Intuition", content: "Saving and investment determine the level of income, not the growth rate. Only technology improvements generate permanent per-capita growth. This is why policy focus on innovation and institutions matters more for long-run prosperity than simply raising the saving rate."}
+    ]
+  },
+  MONETARY: {
+    title: "Monetary Policy",
+    sections: [
+      {heading: "Transmission Mechanism", content: "Central bank changes policy rate, which affects:\n1. Market interest rates (borrowing costs)\n2. Asset prices (stocks, bonds, housing)\n3. Exchange rates (capital flows)\n4. Credit conditions (lending standards)\n\nThese channels influence consumption, investment, net exports, and ultimately output and inflation. Lags are long and variable (12-18 months)."},
+      {heading: "Taylor Rule", content: "i = r* + pi + 0.5(pi - pi*) + 0.5(Y - Y*)/Y*\n\nPrescribes the nominal interest rate based on:\n- r* = neutral real rate (~2%)\n- pi = current inflation\n- pi* = inflation target (~2%)\n- Output gap = (Y - Y*)/Y*\n\nWeights of 0.5 are benchmarks. Hawkish central banks use higher weights on inflation."},
+      {heading: "Zero Lower Bound (ZLB)", content: "Nominal rates can't go significantly below zero (cash offers 0% return). At the ZLB, conventional rate cuts are exhausted. Unconventional tools become necessary: QE, forward guidance, negative rates (limited)."},
+      {heading: "Quantitative Easing", content: "Central bank purchases long-term assets (government bonds, MBS) to:\n- Lower long-term yields (portfolio balance channel)\n- Boost asset prices (wealth effect)\n- Signal commitment to easy policy (signaling channel)\n- Compress term premia\n\nWorks even when short rates are at zero."},
+      {heading: "Forward Guidance", content: "Communicating the expected path of future policy rates. By shaping expectations, the central bank influences long-term rates and economic decisions today. Effective when credible. Two types: calendar-based ('rates low until 2025') and state-contingent ('rates low until unemployment falls below 5%')."},
+      {heading: "Credibility", content: "A credible central bank anchors inflation expectations, reducing the sacrifice ratio of disinflation. Credibility is built through consistent action matching stated targets. Loss of credibility can trigger unanchored expectations and wage-price spirals."},
+      {heading: "Key Intuition", content: "Monetary policy is the primary tool for demand management. It works through interest rate and asset price channels. Effectiveness depends on credibility, transmission mechanism health, and whether the ZLB binds. At the ZLB, fiscal policy becomes relatively more important."}
+    ]
+  },
+  FISCAL: {
+    title: "Fiscal Policy",
+    sections: [
+      {heading: "Government Spending Multiplier", content: "Simple Keynesian: multiplier = 1/(1 - MPC)\nIf MPC = 0.8, multiplier = 5.\n\nIn practice, multipliers are smaller (0.8-1.5) due to:\n- Crowding out (higher rates reduce private investment)\n- Import leakage\n- Monetary policy offset\n- Ricardian effects\n\nMultipliers are larger at the ZLB (no monetary offset) and during recessions (more slack)."},
+      {heading: "Tax Multiplier", content: "Tax multiplier = -MPC/(1 - MPC)\nSmaller in absolute value than the spending multiplier because the first round of spending is reduced by MPC.\n\nBalanced-budget multiplier = 1. Equal increases in G and T raise GDP by exactly the amount of the spending increase."},
+      {heading: "Automatic Stabilizers", content: "Fiscal mechanisms that automatically dampen business cycles without new legislation:\n- Progressive income taxes (revenue falls in recession, rises in boom)\n- Unemployment insurance (spending rises in recession)\n- Welfare programs\n\nThey reduce the amplitude of cycles but can't eliminate them."},
+      {heading: "Crowding Out", content: "Government borrowing competes for loanable funds, pushing up interest rates and reducing private investment. Stronger when the economy is near full capacity. At the ZLB, crowding out is minimal because rates can't rise."},
+      {heading: "Ricardian Equivalence", content: "Theory: consumers anticipate future taxes to repay debt, so they save the tax cut rather than spend it. Tax cuts have no demand effect.\n\nIn practice, this is a benchmark. It fails when consumers are liquidity-constrained, myopic, or if the debt is rolled over indefinitely."},
+      {heading: "Structural vs. Cyclical Deficit", content: "Structural deficit: the deficit at potential output (underlying fiscal stance).\nCyclical deficit: the portion due to automatic stabilizers in recession.\n\nTotal deficit = structural + cyclical. Policy evaluation should focus on the structural deficit."},
+      {heading: "Key Intuition", content: "Fiscal policy is most effective when monetary policy is constrained (ZLB), the economy has slack, and crowding out is limited. Countercyclical fiscal policy means expanding in recessions and consolidating in booms. Procyclical fiscal policy amplifies instability."}
+    ]
+  },
+  EXCHANGE: {
+    title: "Exchange Rates",
+    sections: [
+      {heading: "Uncovered Interest Parity (UIP)", content: "i_domestic - i_foreign = expected depreciation of domestic currency\n\nIf US rates exceed EU rates by 3%, the dollar is expected to depreciate by 3% to equalize returns. Arbitrage enforces this in the absence of risk premia."},
+      {heading: "Purchasing Power Parity (PPP)", content: "Long-run theory: exchange rates adjust so identical goods cost the same across countries.\n\nRelative PPP: the rate of depreciation equals the inflation differential. If US inflation exceeds EU inflation by 2%, the dollar depreciates by 2% annually.\n\nHolds roughly in the long run, poorly in the short run."},
+      {heading: "Currency Depreciation Effects", content: "Exports become cheaper (volume rises), imports become more expensive (volume falls). Net exports improve.\n\nJ-Curve: trade balance initially worsens (contracts priced in foreign currency) before improving as volumes adjust. Typically 6-18 months."},
+      {heading: "Capital Flows", content: "Higher domestic interest rates attract foreign capital, increasing demand for domestic currency and causing appreciation. Capital account surplus finances current account deficit.\n\nSudden stops (capital outflows) can trigger currency crises, especially with fixed exchange rates."},
+      {heading: "Fixed vs. Floating Rates", content: "Fixed: central bank commits to a peg, uses reserves to maintain it. Provides stability but sacrifices monetary policy independence.\n\nFloating: market-determined. Allows independent monetary policy but introduces exchange rate volatility.\n\nThe Mundell-Fleming trilemma governs the tradeoffs."},
+      {heading: "Key Intuition", content: "In the short run, exchange rates are driven by capital flows and interest rate differentials (UIP). In the long run, they're driven by relative price levels (PPP). Depreciation is expansionary (boosts net exports) but inflationary (raises import costs)."}
+    ]
+  },
+  INFLATION: {
+    title: "Inflation Expectations",
+    sections: [
+      {heading: "Why Expectations Matter", content: "Inflation expectations are self-fulfilling. If workers expect higher inflation, they demand higher wages. Firms raise prices to cover costs. Actual inflation rises to match expectations. This is the expectations channel of the Phillips Curve."},
+      {heading: "Adaptive Expectations", content: "Agents look backward: pi_e = pi_t-1 (or a weighted average of past inflation). Adjustment is slow. This creates inflation persistence and makes disinflation costly.\n\nImplication: the sacrifice ratio is high because expectations only fall after a prolonged period of low actual inflation."},
+      {heading: "Rational Expectations", content: "Agents use all available information to form expectations. They understand the model and policy rule. Anticipated policy has no real effects (only surprise policy moves output).\n\nImplication: credible disinflation can be costless if expectations adjust immediately (Sargent's view)."},
+      {heading: "Anchored vs. Unanchored", content: "Anchored: long-run expectations remain near the central bank's target despite short-run shocks. The central bank has credibility. Supply shocks don't spiral.\n\nUnanchored: expectations drift with actual inflation. Creates wage-price spirals. Requires aggressive policy response (Volcker-style tightening)."},
+      {heading: "Fisher Equation", content: "i = r + pi_e\n\nNominal interest rate = real interest rate + expected inflation.\n\nImplication: for a given real rate, higher expected inflation raises nominal rates. Central banks must raise nominal rates more than one-for-one with inflation expectations to raise real rates (the Taylor principle)."},
+      {heading: "Key Intuition", content: "Central bank credibility is the primary anchor for expectations. With anchored expectations, the central bank can 'look through' temporary supply shocks. Without credibility, every shock risks becoming embedded in expectations, requiring costly disinflation."}
+    ]
+  },
+  OPEN: {
+    title: "Open Economy Macro",
+    sections: [
+      {heading: "Mundell-Fleming Trilemma", content: "A country can only achieve two of three:\n1. Free capital mobility\n2. Fixed exchange rate\n3. Independent monetary policy\n\nAdvanced economies typically choose (1) + (3), letting the rate float. Some emerging markets choose (2) + (3), imposing capital controls. No country achieves all three simultaneously."},
+      {heading: "Balance of Payments", content: "Current account + Capital account = 0\n\nCurrent account deficit (imports > exports) must be financed by capital account surplus (net capital inflows). A country that borrows from abroad runs a current account deficit."},
+      {heading: "Twin Deficits", content: "From national accounting: (S - I) = (G - T) + NX\n\nA budget deficit (G > T) can lead to a current account deficit if private saving doesn't rise to offset it. The hypothesis: fiscal deficits cause trade deficits."},
+      {heading: "Mundell-Fleming Results", content: "Flexible rates:\n- Monetary expansion: depreciates currency, boosts net exports, very effective.\n- Fiscal expansion: appreciates currency, crowds out net exports, less effective.\n\nFixed rates:\n- Monetary expansion: impossible (must defend peg).\n- Fiscal expansion: very effective (no exchange rate offset)."},
+      {heading: "Currency Crises", content: "Occur when fixed rate regimes face speculative attacks. Triggers: large current account deficits, overvalued currency, low reserves, loss of confidence.\n\nDefense options: raise rates sharply (contractionary), spend reserves (limited), impose capital controls, or abandon the peg."},
+      {heading: "Key Intuition", content: "In open economies, exchange rates create additional transmission channels for monetary and fiscal policy. The effectiveness of each policy depends critically on the exchange rate regime and capital mobility. Flexible rates enhance monetary policy power; fixed rates enhance fiscal policy power."}
+    ]
+  }
 };
 
 // -- Flashcards (Concept Review) --
@@ -361,13 +479,14 @@ function renderHome(){
 
     <div class="card">
       <h2>Your 4-Hour Study Plan</h2>
-      <div class="study-plan-step"><div class="step-time">0:00-0:30</div><div class="step-info"><strong>Concept Review</strong> — Flip through flashcards on all key models. Build the mental framework first.</div></div>
-      <div class="study-plan-step"><div class="step-time">0:30-1:00</div><div class="step-info"><strong>Lightning Quiz</strong> — Rapid-fire MC to activate recall. Focus on weak topics surfaced by the app.</div></div>
-      <div class="study-plan-step"><div class="step-time">1:00-1:20</div><div class="step-info"><strong>True/False Myth Buster</strong> — Identify and correct common misconceptions before the exam.</div></div>
-      <div class="study-plan-step"><div class="step-time">1:20-1:50</div><div class="step-info"><strong>Numerical Challenge</strong> — Practice calculations: multipliers, Solow steady state, Phillips Curve, Taylor Rule.</div></div>
-      <div class="study-plan-step"><div class="step-time">1:50-1:55</div><div class="step-info"><strong>Break</strong> — Walk, hydrate, reset.</div></div>
-      <div class="study-plan-step"><div class="step-time">1:55-2:30</div><div class="step-info"><strong>Policy Scenarios</strong> — Apply your knowledge to real-world cases. Think through transmission mechanisms.</div></div>
-      <div class="study-plan-step"><div class="step-time">2:30-4:00</div><div class="step-info"><strong>Exam Simulator</strong> — Full 25-question mock exam under timed conditions. Review mistakes after.</div></div>
+      <div class="study-plan-step"><div class="step-time">0:00-0:40</div><div class="step-info"><strong>Topic Review</strong> — Read through all 9 models. Build the mental framework before testing yourself.</div></div>
+      <div class="study-plan-step"><div class="step-time">0:40-1:00</div><div class="step-info"><strong>Flashcards</strong> — Flip through concept cards to reinforce what you just reviewed.</div></div>
+      <div class="study-plan-step"><div class="step-time">1:00-1:25</div><div class="step-info"><strong>Lightning Quiz</strong> — Rapid-fire MC to activate recall. Focus on weak topics surfaced by the app.</div></div>
+      <div class="study-plan-step"><div class="step-time">1:25-1:45</div><div class="step-info"><strong>True/False Myth Buster</strong> — Identify and correct common misconceptions before the exam.</div></div>
+      <div class="study-plan-step"><div class="step-time">1:45-1:50</div><div class="step-info"><strong>Break</strong> — Walk, hydrate, reset.</div></div>
+      <div class="study-plan-step"><div class="step-time">1:50-2:20</div><div class="step-info"><strong>Numerical Challenge</strong> — Practice calculations: multipliers, Solow steady state, Phillips Curve, Taylor Rule.</div></div>
+      <div class="study-plan-step"><div class="step-time">2:20-2:50</div><div class="step-info"><strong>Policy Scenarios</strong> — Apply your knowledge to real-world cases. Think through transmission mechanisms.</div></div>
+      <div class="study-plan-step"><div class="step-time">2:50-4:00</div><div class="step-info"><strong>Exam Simulator</strong> — Full 25-question mock exam under timed conditions. Review mistakes after.</div></div>
     </div>
 
     <div class="card">
@@ -379,12 +498,22 @@ function renderHome(){
       <button class="btn btn-outline btn-sm" style="margin-top:12px" onclick="if(confirm('Reset all progress?')){localStorage.removeItem('${LS_KEY}');state=getDefaultState();saveState();renderHome()}">Reset Progress</button>
     </div>
 
-    <h2 style="margin:14px 0 8px">Study Modes</h2>
+    <div class="card mode-card" onclick="startReview()" style="border:2px solid var(--accent);background:linear-gradient(135deg,var(--accent-light),var(--card))">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="mode-icon" style="font-size:2rem;margin:0">📖</div>
+        <div>
+          <div class="mode-label" style="font-size:1.05rem">Start Here: Topic Review</div>
+          <div class="mode-desc" style="font-size:.85rem;margin-top:4px">Walk through all 9 models with diagrams, equations, and examples before testing yourself.</div>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="margin:14px 0 8px">Practice Modes</h2>
     <div class="grid-2">
       <div class="card mode-card" onclick="startFlashcards()">
         <div class="mode-icon">📇</div>
-        <div class="mode-label">Concept Review</div>
-        <div class="mode-desc">${flashcards.length} flashcards across all models</div>
+        <div class="mode-label">Flashcards</div>
+        <div class="mode-desc">${flashcards.length} concept cards across all models</div>
       </div>
       <div class="card mode-card" onclick="startLightning()">
         <div class="mode-icon">⚡</div>
@@ -413,6 +542,92 @@ function renderHome(){
       </div>
     </div>
   `);
+}
+
+// ============================================================
+// MODE 0: TOPIC REVIEW
+// ============================================================
+let reviewVisited = new Set();
+
+function startReview(){
+  reviewVisited = new Set();
+  renderReviewList();
+}
+
+function renderReviewList(){
+  const topicKeys = Object.keys(TOPICS);
+  const cards = topicKeys.map((t,i)=>{
+    const visited = reviewVisited.has(t);
+    const badgeHtml = visited ? '<span class="badge badge-green" style="margin-left:auto">Reviewed</span>' : '';
+    return `<div class="card review-topic-card" onclick="renderReviewTopic('${t}')">
+      <div class="review-topic-num">${i+1}</div>
+      <div style="flex:1">
+        <div style="font-weight:600;font-size:.95rem">${TOPICS[t]}</div>
+        <div style="font-size:.78rem;color:var(--gray);margin-top:2px">${topicReviews[t].sections.length} sections</div>
+      </div>
+      ${badgeHtml}
+    </div>`;
+  }).join('');
+
+  const reviewedCount = reviewVisited.size;
+  const totalTopics = topicKeys.length;
+  const pct = Math.round(reviewedCount / totalTopics * 100);
+
+  render(`
+    <div class="nav-row">
+      <button class="back-btn" onclick="renderHome()">← Back</button>
+      <span class="question-num">${reviewedCount}/${totalTopics} reviewed</span>
+    </div>
+    <div class="card" style="text-align:center;padding:16px">
+      <h2 style="margin-bottom:4px">Topic Review</h2>
+      <p class="subtitle">Read through each model before testing yourself. Tap a topic to dive in.</p>
+      <div class="progress-bar" style="margin-top:10px"><div class="progress-fill" style="width:${pct}%;background:var(--green)"></div></div>
+    </div>
+    ${cards}
+    ${reviewedCount === totalTopics ? `<button class="btn btn-primary btn-block" style="margin-top:8px" onclick="startFlashcards()">Ready! Start Flashcards →</button>` : ''}
+  `);
+}
+
+function renderReviewTopic(topicKey){
+  reviewVisited.add(topicKey);
+  const review = topicReviews[topicKey];
+  const topicKeys = Object.keys(TOPICS);
+  const currentIdx = topicKeys.indexOf(topicKey);
+  const prevTopic = currentIdx > 0 ? topicKeys[currentIdx - 1] : null;
+  const nextTopic = currentIdx < topicKeys.length - 1 ? topicKeys[currentIdx + 1] : null;
+
+  const navDots = topicKeys.map((t,i)=>{
+    const isActive = t === topicKey;
+    const isVisited = reviewVisited.has(t) && !isActive;
+    const cls = isActive ? 'active' : isVisited ? 'visited' : '';
+    return `<span class="review-nav-dot ${cls}" onclick="renderReviewTopic('${t}')">${TOPICS[t]}</span>`;
+  }).join('');
+
+  const sectionsHtml = review.sections.map(s=>`
+    <div class="review-section">
+      <div class="review-section-heading">${s.heading}</div>
+      <div class="review-section-content">${s.content}</div>
+      ${s.diagram ? `<div style="margin:14px 0;text-align:center;overflow-x:auto">${s.diagram}</div>` : ''}
+      ${s.example ? `<div style="margin-top:10px;padding:12px 16px;background:#f0f4f8;border-radius:8px;border-left:3px solid var(--accent);font-size:.88rem;line-height:1.6"><strong style="color:var(--accent)">Example:</strong> ${s.example}</div>` : ''}
+    </div>
+  `).join('');
+
+  render(`
+    <div class="nav-row">
+      <button class="back-btn" onclick="renderReviewList()">← All Topics</button>
+      <span class="question-num">${currentIdx+1} / ${topicKeys.length}</span>
+    </div>
+    <div class="review-nav">${navDots}</div>
+    <div class="card">
+      <h2 style="margin-bottom:16px">${review.title}</h2>
+      ${sectionsHtml}
+    </div>
+    <div style="display:flex;gap:10px;margin-top:10px">
+      ${prevTopic ? `<button class="btn btn-outline" style="flex:1" onclick="renderReviewTopic('${prevTopic}')">← ${TOPICS[prevTopic]}</button>` : '<div style="flex:1"></div>'}
+      ${nextTopic ? `<button class="btn btn-primary" style="flex:1" onclick="renderReviewTopic('${nextTopic}')">${TOPICS[nextTopic]} →</button>` : `<button class="btn btn-green" style="flex:1" onclick="renderReviewList()">Done! ✓</button>`}
+    </div>
+  `);
+  window.scrollTo(0,0);
 }
 
 // ============================================================
