@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>XMBA 201 Macroeconomics — Final Exam Prep</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#f8f9fa;--card:#fff;--primary:#1a3a5c;--accent:#2563eb;--accent-light:#dbeafe;--green:#16a34a;--green-light:#dcfce7;--red:#dc2626;--red-light:#fee2e2;--orange:#ea580c;--orange-light:#fff7ed;--gray:#6b7280;--gray-light:#e5e7eb;--text:#1f2937;--radius:10px;--shadow:0 1px 3px rgba(0,0,0,.08)}
@@ -98,6 +99,41 @@ header{text-align:center;padding:20px 0 10px}
 .review-nav-dot:hover{border-color:var(--accent);color:var(--accent)}
 .review-nav-dot.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 .review-nav-dot.visited{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+
+/* ---- CHEAT SHEET (printable 2-page) ---- */
+.cs-container{display:none}
+.cs-container.active{display:block}
+.cs-screen .cs-container{display:block}
+.cs-header{text-align:center;margin-bottom:6px}
+.cs-header h1{font-size:1rem;margin-bottom:1px}
+.cs-header p{font-size:.68rem;color:var(--gray)}
+.cs-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.cs-box{border:1.5px solid var(--gray-light);border-radius:6px;padding:5px 7px;page-break-inside:avoid;break-inside:avoid}
+.cs-box h3{font-size:.72rem;font-weight:700;color:var(--accent);margin-bottom:3px;border-bottom:1.5px solid var(--accent-light);padding-bottom:2px}
+.cs-box h4{font-size:.65rem;font-weight:700;color:var(--primary);margin:3px 0 1px}
+.cs-box p,.cs-box li,.cs-box code{font-size:.6rem;line-height:1.35}
+.cs-box ul{margin:0;padding-left:12px}
+.cs-box li{margin-bottom:1px}
+.cs-box code{font-family:monospace;background:#fffbeb;padding:0 3px;border-radius:2px;color:#92400e;font-size:.58rem}
+.cs-box .eq{font-family:monospace;font-size:.58rem;background:#fffbeb;border-left:2px solid #f59e0b;padding:2px 5px;margin:2px 0;border-radius:2px;color:#92400e;line-height:1.4}
+.cs-box .trap{font-size:.58rem;color:var(--red);font-weight:600;margin-top:2px}
+.cs-box .def{font-size:.52rem;color:#6b7280;font-style:italic;line-height:1.3;margin:1px 0 2px;padding-left:4px;border-left:1.5px solid #e5e7eb}
+.cs-page-break{page-break-after:always;break-after:page;height:0;margin:0}
+.cs-print-btn{margin-bottom:10px}
+
+@media print{
+  body{background:#fff!important;margin:0;padding:0;font-size:9pt}
+  .container{max-width:100%!important;padding:0!important;margin:0!important}
+  .cs-grid{gap:4px}
+  .cs-box{border:1px solid #ccc;padding:4px 6px}
+  .cs-box h3{font-size:8pt}
+  .cs-box h4{font-size:7pt}
+  .cs-box p,.cs-box li,.cs-box code,.cs-box .eq,.cs-box .trap{font-size:6.5pt}
+  .cs-header h1{font-size:11pt}
+  .cs-header p{font-size:7pt}
+  .cs-print-btn,.cs-no-print{display:none!important}
+  @page{size:letter;margin:0.4in}
+}
 </style>
 </head>
 <body>
@@ -569,6 +605,16 @@ function renderHome(){
         <div>
           <div class="mode-label" style="font-size:1.05rem">Start Here: Topic Review</div>
           <div class="mode-desc" style="font-size:.85rem;margin-top:4px">Walk through all 9 models with diagrams, equations, and examples before testing yourself.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mode-card" onclick="renderCheatSheet()" style="border:2px solid #f59e0b;background:linear-gradient(135deg,#fffbeb,var(--card))">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="mode-icon" style="font-size:2rem;margin:0">📋</div>
+        <div>
+          <div class="mode-label" style="font-size:1.05rem">2-Page Exam Cheat Sheet</div>
+          <div class="mode-desc" style="font-size:.85rem;margin-top:4px">All 9 models, key equations, diagrams, exam traps & strategy on 2 printable pages. Download as PDF.</div>
         </div>
       </div>
     </div>
@@ -1159,6 +1205,424 @@ function gradeExam(){
     <div style="display:flex;gap:10px;margin-top:8px">
       <button class="btn btn-primary" style="flex:1" onclick="startExam()">Retake Exam</button>
       <button class="btn btn-outline" style="flex:1" onclick="renderHome()">Back to Menu</button>
+    </div>
+  `);
+}
+
+// ============================================================
+// CHEAT SHEET (printable 2-page exam reference)
+// ============================================================
+function downloadCheatSheetPDF(){
+  const el = document.getElementById('cs-content');
+  const opt = {
+    margin: [0.3, 0.3, 0.3, 0.3],
+    filename: 'XMBA201_Macro_CheatSheet.pdf',
+    image: {type:'jpeg',quality:0.98},
+    html2canvas: {scale:2,useCORS:true,letterRendering:true},
+    jsPDF: {unit:'in',format:'letter',orientation:'portrait'},
+    pagebreak: {mode:['css','legacy'],before:'.cs-page-break-before'}
+  };
+  html2pdf().set(opt).from(el).save();
+}
+
+function renderCheatSheet(){
+  render(`
+    <div class="nav-row cs-no-print"><button class="back-btn" onclick="renderHome()">← Back</button><span class="question-num">2-Page Exam Cheat Sheet</span></div>
+    <div style="display:flex;gap:8px" class="cs-no-print cs-print-btn">
+      <button class="btn btn-primary" style="flex:1" onclick="downloadCheatSheetPDF()">📥 Download PDF</button>
+      <button class="btn btn-outline" style="flex:1" onclick="window.print()">🖨️ Print</button>
+    </div>
+
+    <div id="cs-content">
+    <!-- ===== PAGE 1 ===== -->
+    <div class="cs-header"><h1>XMBA 201 Macroeconomics — Exam Cheat Sheet</h1><p>Page 1 of 3 · Core Models, Diagrams & Equations</p></div>
+    <div class="cs-grid">
+
+      <div class="cs-box">
+        <h3>1. IS-MP Model</h3>
+        <svg viewBox="0 0 200 130" style="width:100%;max-height:85px;display:block;margin:2px 0"><line x1="30" y1="110" x2="185" y2="110" stroke="#1a3a5c" stroke-width="1.5"/><line x1="30" y1="110" x2="30" y2="10" stroke="#1a3a5c" stroke-width="1.5"/><text x="175" y="125" font-size="8" fill="#6b7280">Y</text><text x="10" y="15" font-size="8" fill="#6b7280">r</text><line x1="45" y1="25" x2="160" y2="95" stroke="#2563eb" stroke-width="2"/><text x="162" y="100" font-size="8" fill="#2563eb" font-weight="700">IS</text><line x1="40" y1="90" x2="170" y2="35" stroke="#dc2626" stroke-width="2"/><text x="172" y="35" font-size="8" fill="#dc2626" font-weight="700">MP</text><circle cx="103" cy="62" r="3.5" fill="#1a3a5c"/><text x="108" y="58" font-size="7" fill="#1a3a5c" font-weight="700">A</text><line x1="75" y1="25" x2="185" y2="92" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.4"/><text x="178" y="86" font-size="7" fill="#16a34a">IS'</text><circle cx="125" cy="50" r="3" fill="#16a34a"/><text x="130" y="47" font-size="7" fill="#16a34a" font-weight="700">B</text></svg>
+        <div class="eq">Y = C(Y−T) + I(r) + G + NX</div>
+        <div class="def">Y=output, C=consumption, T=taxes, I=investment, r=real interest rate, G=gov spending, NX=net exports</div>
+        <ul>
+          <li>IS slopes ↓ (lower r → more I → higher Y)</li>
+          <li>MP slopes ↑ (CB raises r when Y rises)</li>
+          <li>↑G or ↓T → IS right → ↑Y, ↑r</li>
+          <li>CB eases → MP down → ↑Y, ↓r</li>
+        </ul>
+        <div class="trap">⚠ Fiscal expansion raises BOTH Y and r (crowding out via MP)</div>
+      </div>
+
+      <div class="cs-box">
+        <h3>2. AD-IA Model</h3>
+        <svg viewBox="0 0 200 130" style="width:100%;max-height:85px;display:block;margin:2px 0"><line x1="30" y1="110" x2="185" y2="110" stroke="#1a3a5c" stroke-width="1.5"/><line x1="30" y1="110" x2="30" y2="10" stroke="#1a3a5c" stroke-width="1.5"/><text x="175" y="125" font-size="8" fill="#6b7280">Y</text><text x="10" y="15" font-size="8" fill="#6b7280">π</text><line x1="50" y1="22" x2="165" y2="95" stroke="#2563eb" stroke-width="2"/><text x="167" y="99" font-size="8" fill="#2563eb" font-weight="700">AD</text><line x1="40" y1="60" x2="180" y2="60" stroke="#ea580c" stroke-width="2"/><text x="182" y="63" font-size="8" fill="#ea580c" font-weight="700">IA</text><line x1="105" y1="110" x2="105" y2="15" stroke="#6b7280" stroke-width="1" stroke-dasharray="3,2"/><text x="98" y="123" font-size="7" fill="#6b7280">Y*</text><circle cx="105" cy="60" r="3.5" fill="#1a3a5c"/><line x1="80" y1="22" x2="185" y2="90" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.4"/><text x="178" y="83" font-size="7" fill="#16a34a">AD'</text></svg>
+        <ul>
+          <li>AD slopes ↓: higher π → CB tightens → ↓Y</li>
+          <li>IA horizontal at current π (sticky)</li>
+          <li>+Demand: AD right, SR: ↑Y ↑π. LR: IA up, Y→Y*</li>
+          <li>−Supply: IA up → stagflation</li>
+        </ul>
+        <div class="trap">⚠ Demand shocks move along IA; supply shocks shift IA itself</div>
+      </div>
+
+      <div class="cs-box">
+        <h3>3. Phillips Curve</h3>
+        <svg viewBox="0 0 200 130" style="width:100%;max-height:85px;display:block;margin:2px 0"><line x1="30" y1="110" x2="185" y2="110" stroke="#1a3a5c" stroke-width="1.5"/><line x1="30" y1="110" x2="30" y2="10" stroke="#1a3a5c" stroke-width="1.5"/><text x="175" y="125" font-size="8" fill="#6b7280">u</text><text x="10" y="15" font-size="8" fill="#6b7280">π</text><line x1="105" y1="110" x2="105" y2="15" stroke="#dc2626" stroke-width="2"/><text x="108" y="22" font-size="7" fill="#dc2626" font-weight="700">LRPC</text><path d="M45,35 Q100,60 175,80" stroke="#2563eb" stroke-width="2" fill="none"/><text x="176" y="76" font-size="7" fill="#2563eb" font-weight="700">SRPC</text><path d="M45,18 Q100,42 175,62" stroke="#2563eb" stroke-width="1.5" fill="none" stroke-dasharray="4,3" opacity="0.4"/><text x="176" y="58" font-size="7" fill="#2563eb" opacity="0.5">SRPC'</text><circle cx="105" cy="60" r="3" fill="#1a3a5c"/></svg>
+        <div class="eq">π = πᵉ − β(u − uₙ) + v</div>
+        <div class="def">π=actual inflation, πᵉ=expected inflation, β=slope (sensitivity), u=unemployment, uₙ=natural rate (NAIRU), v=supply shock</div>
+        <ul>
+          <li>u &lt; uₙ → π rises (overheating)</li>
+          <li>u &gt; uₙ → π falls (slack)</li>
+          <li>LRPC vertical at uₙ — no LR tradeoff</li>
+          <li>↑πᵉ shifts entire SRPC up</li>
+        </ul>
+        <div class="trap">⚠ Sacrifice ratio: ~2.5 cumulative output cost per 1pp π drop</div>
+      </div>
+
+      <div class="cs-box">
+        <h3>4. Solow Growth Model</h3>
+        <svg viewBox="0 0 200 130" style="width:100%;max-height:85px;display:block;margin:2px 0"><line x1="30" y1="110" x2="185" y2="110" stroke="#1a3a5c" stroke-width="1.5"/><line x1="30" y1="110" x2="30" y2="10" stroke="#1a3a5c" stroke-width="1.5"/><text x="170" y="125" font-size="8" fill="#6b7280">k</text><text x="8" y="15" font-size="7" fill="#6b7280">inv,dep</text><line x1="30" y1="110" x2="180" y2="30" stroke="#dc2626" stroke-width="1.5"/><text x="170" y="24" font-size="7" fill="#dc2626">(n+δ)k</text><path d="M30,110 Q90,30 180,55" stroke="#2563eb" stroke-width="2" fill="none"/><text x="182" y="53" font-size="7" fill="#2563eb" font-weight="700">sf(k)</text><circle cx="118" cy="65" r="3.5" fill="#1a3a5c"/><line x1="118" y1="110" x2="118" y2="71" stroke="#6b7280" stroke-width="1" stroke-dasharray="3,2"/><text x="112" y="123" font-size="7" fill="#1a3a5c" font-weight="700">k*</text></svg>
+        <div class="eq">y = A·kᵅ | Δk = sy−(n+δ)k<br>k* = [sA/(n+δ)]^(1/(1−α))</div>
+        <div class="def">y=output/worker, A=TFP (technology), k=capital/worker, α=capital share (~0.3), s=savings rate, n=pop growth, δ=depreciation, k*=steady-state capital</div>
+        <ul>
+          <li>↑s or ↑A → higher k*, y*</li>
+          <li>↑n or ↑δ → lower k*, y*</li>
+          <li>Golden Rule: MPK = n + δ (max C)</li>
+        </ul>
+        <div class="trap">⚠ Only TFP (A) drives sustained per-capita growth. Capital alone → diminishing returns</div>
+      </div>
+
+      <div class="cs-box">
+        <h3>5. Monetary Policy</h3>
+        <h4>Taylor Rule</h4>
+        <div class="eq">i = r* + π + 0.5(π−π*) + 0.5·gap</div>
+        <div class="def">i=nominal fed funds rate, r*=equilibrium real rate (~2%), π=current inflation, π*=target inflation (~2%), gap=(Y−Y*)/Y* output gap</div>
+        <h4>Transmission</h4>
+        <p>CB ↓FFR → ↓r → ↑I,↑C → ↑AD → ↑Y<br>Also: ↓r → ↓$ → ↑NX</p>
+        <h4>ZLB Toolkit</h4>
+        <ul>
+          <li><b>QE:</b> buy long assets → ↓ long rates</li>
+          <li><b>Forward guidance:</b> commit future low r</li>
+          <li><b>Negative rates:</b> charge banks for reserves</li>
+        </ul>
+        <div class="trap">⚠ Taylor π coeff is 1.5 total (1+0.5), not 0.5</div>
+      </div>
+
+      <div class="cs-box">
+        <h3>6. Fiscal Policy</h3>
+        <h4>Multipliers</h4>
+        <div class="eq">G mult = 1/(1−MPC)<br>T mult = −MPC/(1−MPC)<br>Balanced budget mult = 1</div>
+        <div class="def">MPC=marginal propensity to consume (fraction of extra $1 spent). If MPC=0.8 → G mult=5, T mult=−4</div>
+        <h4>Key Concepts</h4>
+        <ul>
+          <li><b>Auto stabilizers:</b> no lag (taxes↓, transfers↑)</li>
+          <li><b>Crowding out:</b> ↑G → ↑r → ↓I</li>
+          <li><b>Ricardian eq:</b> fails in practice (myopia)</li>
+        </ul>
+        <div class="trap">⚠ |G multiplier| > |T multiplier| always. G enters AD directly; T works through MPC</div>
+      </div>
+
+    </div>
+
+    <div class="cs-page-break cs-page-break-before"></div>
+
+    <!-- ===== PAGE 2 ===== -->
+    <div class="cs-header" style="margin-top:8px"><h1>XMBA 201 Macroeconomics — Exam Cheat Sheet</h1><p>Page 2 of 3 · Open Economy, Strategy & Exam Traps</p></div>
+    <div class="cs-grid">
+
+      <div class="cs-box">
+        <h3>7. Exchange Rates</h3>
+        <svg viewBox="0 0 200 110" style="width:100%;max-height:72px;display:block;margin:2px 0"><line x1="30" y1="95" x2="185" y2="95" stroke="#1a3a5c" stroke-width="1.5"/><line x1="30" y1="95" x2="30" y2="8" stroke="#1a3a5c" stroke-width="1.5"/><text x="160" y="108" font-size="7" fill="#6b7280">Time</text><text x="8" y="14" font-size="7" fill="#6b7280">NX</text><line x1="30" y1="50" x2="185" y2="50" stroke="#6b7280" stroke-width="0.8" stroke-dasharray="3,2"/><path d="M35,50 Q55,75 80,80 Q110,78 140,45 Q160,30 180,25" stroke="#2563eb" stroke-width="2" fill="none"/><text x="55" y="92" font-size="7" fill="#dc2626">J-Curve</text><text x="140" y="22" font-size="7" fill="#16a34a">Recovery</text></svg>
+        <div class="eq">UIP: i = i* + (Eᵉ−E)/E<br>PPP: %ΔE ≈ π − π*</div>
+        <div class="def">i=domestic interest rate, i*=foreign rate, E=exchange rate ($/foreign), Eᵉ=expected future E, π=domestic inflation, π*=foreign inflation</div>
+        <ul>
+          <li>↑r → capital inflow → appreciation</li>
+          <li>J-Curve: NX worsens then improves</li>
+          <li>Marshall-Lerner: NX improves if elasticities sum > 1</li>
+        </ul>
+        <div class="trap">⚠ Higher rates → currency APPRECIATES (not depreciates)</div>
+      </div>
+
+      <div class="cs-box">
+        <h3>8. Inflation Expectations</h3>
+        <div class="eq">Fisher: i = r + πᵉ → r = i − πᵉ</div>
+        <div class="def">i=nominal rate (what you see), r=real rate (purchasing power), πᵉ=expected inflation</div>
+        <h4>Adaptive vs Rational</h4>
+        <ul>
+          <li><b>Adaptive:</b> πᵉₜ = πₜ₋₁ (backward)</li>
+          <li><b>Rational:</b> πᵉ = E[π|all info] (forward)</li>
+        </ul>
+        <h4>Anchored vs Unanchored</h4>
+        <ul>
+          <li><b>Anchored:</b> πᵉ near target despite shocks → self-correcting</li>
+          <li><b>Unanchored:</b> πᵉ drifts → wage-price spiral risk</li>
+        </ul>
+        <div class="trap">⚠ Anchored expectations = CB's #1 asset. Makes supply shocks temporary</div>
+      </div>
+
+      <div class="cs-box">
+        <h3>9. Open Economy</h3>
+        <svg viewBox="0 0 200 105" style="width:100%;max-height:70px;display:block;margin:2px 0"><polygon points="100,10 35,92 165,92" fill="none" stroke="#1a3a5c" stroke-width="1.5"/><text x="58" y="8" font-size="7" fill="#1a3a5c" font-weight="700">Trilemma</text><text x="60" y="22" font-size="6.5" fill="#2563eb">Free Capital</text><text x="4" y="102" font-size="6.5" fill="#dc2626">Fixed FX</text><text x="132" y="102" font-size="6.5" fill="#16a34a">Indep. MP</text><text x="55" y="68" font-size="7" fill="#6b7280" font-weight="600">Pick 2 of 3</text></svg>
+        <div class="eq">CA + KA + FA = 0<br>Twin: S−I = (G−T) + NX</div>
+        <div class="def">CA=current account (trade), KA=capital account, FA=financial account, S=national saving, I=investment, (G−T)=budget deficit, NX=net exports</div>
+        <ul>
+          <li>CA deficit → capital inflows (FA surplus)</li>
+          <li>Budget deficit → trade deficit</li>
+        </ul>
+        <div class="trap">⚠ Fixed FX + free capital = no independent MP</div>
+      </div>
+
+      <div class="cs-box" style="grid-column:span 1">
+        <h3>📐 All Key Formulas (with definitions)</h3>
+        <div class="eq">G mult: 1/(1−MPC)</div><div class="def">MPC=marginal propensity to consume</div>
+        <div class="eq">T mult: −MPC/(1−MPC)</div><div class="def">Smaller than G mult because T works indirectly via MPC</div>
+        <div class="eq">Taylor: i = r*+π+0.5(π−π*)+0.5·gap</div><div class="def">i=fed funds, r*=eq. real rate, π*=target π, gap=output gap</div>
+        <div class="eq">Solow: k* = [sA/(n+δ)]^(1/(1−α))</div><div class="def">s=savings, A=TFP, n=pop growth, δ=depreciation, α=capital share</div>
+        <div class="eq">Phillips: π = πᵉ−β(u−uₙ)+v</div><div class="def">πᵉ=expected π, β=slope, uₙ=NAIRU, v=supply shock</div>
+        <div class="eq">Fisher: i = r + πᵉ</div><div class="def">i=nominal rate, r=real rate, πᵉ=expected inflation</div>
+        <div class="eq">UIP: i = i*+(Eᵉ−E)/E</div><div class="def">i*=foreign rate, E=exchange rate, Eᵉ=expected future E</div>
+        <div class="eq">Golden Rule: MPK = n+δ</div><div class="def">MPK=marginal product of capital. Maximizes consumption, not output</div>
+        <div class="eq">PPP: %ΔE ≈ π−π*</div><div class="def">%ΔE=currency depreciation, π*=foreign inflation</div>
+        <div class="eq">QTM: MV = PY → π ≈ gₘ−gᵧ</div><div class="def">M=money supply, V=velocity, gₘ=money growth, gᵧ=output growth</div>
+        <div class="eq">Debt: Δ(B/Y)=[(r−g)/(1+g)]·(B/Y)+(G−T)/Y</div><div class="def">B/Y=debt-to-GDP, r−g=interest-growth gap</div>
+        <div class="eq">Real ER: ε = e·P/P*</div><div class="def">e=nominal rate, P/P*=relative prices. ε=1→PPP</div>
+        <div class="eq">IRP: Δε = r−r*−θ</div><div class="def">θ=country risk premium. r>r*+θ → appreciation</div>
+        <div class="eq">Natural U: u* = s/(s+f)</div><div class="def">s=separation rate, f=job-finding rate</div>
+        <div class="eq">Loanable Funds: S(r)=I(r)+(G−T)</div><div class="def">LR: full crowding out. Fiscal multiplier=0</div>
+        <div class="eq">Growth Acct: Δy/y=ΔA/A+α·Δk/k</div><div class="def">ΔA/A=Solow residual (TFP), α≈0.3</div>
+      </div>
+
+      <div class="cs-box" style="grid-column:span 2">
+        <h3>🧠 How to Pass: Exam Strategy</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 10px">
+          <div>
+            <h4>Time Management (90 min, 25 Qs)</h4>
+            <ul>
+              <li>~3.5 min per question max</li>
+              <li>Flag hard Qs, come back after easy ones</li>
+              <li>Save 10 min for review at end</li>
+            </ul>
+            <h4>MC Strategy</h4>
+            <ul>
+              <li>Eliminate 2 wrong answers first</li>
+              <li>Look for "always/never" — usually wrong</li>
+              <li>When stuck, trace the causal chain step by step</li>
+              <li>Don't overthink — first instinct is often right</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Calculation Questions</h4>
+            <ul>
+              <li>Write the formula first, then plug in numbers</li>
+              <li>Check units: % vs decimal, levels vs changes</li>
+              <li>MPC=0.8 → G mult=5, T mult=−4 (memorize!)</li>
+              <li>Solow: set sy = (n+δ)k, solve for k*</li>
+            </ul>
+            <h4>Graph/Shift Questions</h4>
+            <ul>
+              <li>Always identify: WHAT shifts, WHICH direction</li>
+              <li>Read both axes before answering</li>
+              <li>SR vs LR: name both effects</li>
+              <li>Label the starting point (A) and ending point (B)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs-box" style="grid-column:span 3">
+        <h3>🚨 Top 15 Exam Traps — Don't Lose Points on These</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px 10px">
+          <ul>
+            <li>Fiscal expansion raises r AND Y (crowding out)</li>
+            <li>Only TFP sustains per-capita growth in Solow</li>
+            <li>Taylor π coeff = 1.5 total, not 0.5</li>
+            <li>|G multiplier| > |T multiplier| always</li>
+            <li>Higher rates → currency appreciates</li>
+          </ul>
+          <ul>
+            <li>LRPC is vertical — no LR π/u tradeoff</li>
+            <li>Supply shocks shift IA; demand shifts AD</li>
+            <li>J-Curve: NX worsens before improving</li>
+            <li>Ricardian equivalence rarely holds</li>
+            <li>ZLB → need QE / forward guidance</li>
+          </ul>
+          <ul>
+            <li>Balanced budget multiplier = 1 (not 0)</li>
+            <li>Anchored πᵉ makes supply shocks temporary</li>
+            <li>Trilemma: can't have all 3</li>
+            <li>Auto stabilizers have NO implementation lag</li>
+            <li>Golden Rule maximizes consumption, not output</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="cs-page-break cs-page-break-before"></div>
+
+    <!-- ===== PAGE 3 ===== -->
+    <div class="cs-header" style="margin-top:8px"><h1>XMBA 201 Macroeconomics — Exam Cheat Sheet</h1><p>Page 3 of 3 · Labor, Debt, Money & Curve Shifts</p></div>
+    <div class="cs-grid">
+
+      <div class="cs-box">
+        <h3>10. Labor Markets</h3>
+        <h4>Identities</h4>
+        <div class="eq">LF = E + U<br>UR = U / LF<br>LFPR = LF / POP<br>E/P = LFPR × (1 − UR)</div>
+        <div class="def">E=employed, U=unemployed (actively seeking), LF=labor force, NILF=not in LF (includes discouraged workers — NOT counted as U)</div>
+        <h4>Natural Unemployment</h4>
+        <div class="eq">u* = s / (s + f)</div>
+        <div class="def">s=separation rate (E→U), f=job-finding rate (U→E). Lower s or higher f → lower u*</div>
+        <ul>
+          <li>Frictional: search time (always present)</li>
+          <li>Structural: skill/location mismatch, institutions</li>
+          <li>Cyclical: demand-driven, policy-responsive</li>
+        </ul>
+        <div class="trap">⚠ Falling UR + falling LFPR = misleading. Track E/P to detect discouraged worker exits</div>
+      </div>
+
+      <div class="cs-box">
+        <h3>11. Minimum Wage & SBTC</h3>
+        <h4>Competitive Market</h4>
+        <ul>
+          <li>MW above w* → structural U = Lˢ − Lᴰ</li>
+          <li>Employment always falls if MW > competitive eq.</li>
+        </ul>
+        <h4>Monopsony (Card-Krueger)</h4>
+        <ul>
+          <li>Single employer holds wage below w*</li>
+          <li>MW in [mono, comp] range → wages↑ AND employment↑</li>
+          <li>MW above competitive eq. → employment↓ regardless</li>
+        </ul>
+        <h4>Skill-Biased Tech Change</h4>
+        <ul>
+          <li>College premium: ~45% (1965) → ~95% (2012)</li>
+          <li>Both college wages↑ AND employment↑ → demand (SBTC) dominates supply</li>
+          <li>Supply alone would show ↑employment but ↓wages</li>
+        </ul>
+        <div class="trap">⚠ Card-Krueger only works under monopsony. Above competitive eq. → employment falls always</div>
+      </div>
+
+      <div class="cs-box">
+        <h3>12. Debt Sustainability</h3>
+        <div class="eq">Δ(B/Y) = [(r−g)/(1+g)]·(B/Y) + (G−T)/Y</div>
+        <div class="def">B/Y=debt-to-GDP, r=real interest rate, g=real GDP growth, (G−T)/Y=primary deficit as % of GDP</div>
+        <h4>Stabilization Condition</h4>
+        <div class="eq">(T−G)/Y = [(r−g)/(1+g)]·(B/Y)</div>
+        <div class="def">Primary surplus needed to stabilize debt ratio</div>
+        <ul>
+          <li>r &lt; g → favorable: debt shrinks automatically</li>
+          <li>r &gt; g → snowball: debt ratio explodes without surplus</li>
+          <li>Large primary deficit can override favorable r−g</li>
+        </ul>
+        <div class="trap">⚠ r &lt; g ≠ sustainable if primary deficit is large enough (current US: r&lt;g saves ~0.7%, but deficit of 3.4% → debt still rising)</div>
+      </div>
+
+      <div class="cs-box">
+        <h3>13. Money & Quantity Theory</h3>
+        <div class="eq">MV = PY</div>
+        <div class="def">M=money supply, V=velocity, P=price level, Y=real output. Identity, not behavioral.</div>
+        <div class="eq">π ≈ gₘ − gᵧ</div>
+        <div class="def">Inflation ≈ money growth − output growth (assumes stable V in LR)</div>
+        <h4>OMO vs QE</h4>
+        <ul>
+          <li><b>OMO:</b> buy short-term Treasuries → change FFR (normal tool)</li>
+          <li><b>QE:</b> buy long-term bonds + MBS → lower long-term rates (ZLB tool)</li>
+          <li>Different instruments, different targets</li>
+        </ul>
+        <h4>Post-2009 Framework</h4>
+        <ul>
+          <li>IORB = floor for bank rates</li>
+          <li>ON RRP = floor for non-bank rates</li>
+        </ul>
+        <div class="trap">⚠ OMO ≠ QE. OMO changes FFR (short end); QE targets long end. QE only at ZLB</div>
+      </div>
+
+      <div class="cs-box">
+        <h3>14. Loanable Funds (LR)</h3>
+        <div class="eq">S(r) = I(r) + (G − T)</div>
+        <div class="def">S=national savings (↑ with r), I=private investment (↓ with r), (G−T)=fiscal deficit</div>
+        <ul>
+          <li>LR: r adjusts until savings = investment + deficit</li>
+          <li>G↑ → demand for funds↑ → r↑ → I falls by exactly ΔG</li>
+          <li><b>LR crowding out is COMPLETE</b> (Y pinned at Y*)</li>
+        </ul>
+        <h4>SR vs LR Crowding Out</h4>
+        <ul>
+          <li><b>SR (IS-MP):</b> G↑ → Y↑, r↑. Partial crowding out.</li>
+          <li><b>LR (Loanable Funds):</b> Y fixed at Y*. Full crowding out. Fiscal multiplier = 0.</li>
+        </ul>
+        <div class="trap">⚠ LR fiscal multiplier is ZERO — r rises enough to fully crowd out private I</div>
+      </div>
+
+      <div class="cs-box">
+        <h3>15. Real Exchange Rate & IRP</h3>
+        <div class="eq">ε = e · P / P*</div>
+        <div class="def">ε=real exchange rate, e=nominal rate (foreign per domestic), P=domestic prices, P*=foreign prices. ε=1→PPP holds. ε>1→domestic goods expensive (overvalued)</div>
+        <div class="eq">Δε = r − r* − θ</div>
+        <div class="def">θ=country risk premium. r>r*+θ → capital IN → appreciation. r&lt;r*+θ → capital OUT → depreciation</div>
+        <h4>Fixed ER Reserve Mechanics</h4>
+        <ul>
+          <li>r &gt; r*+θ → capital IN → CB buys foreign reserves → M↑</li>
+          <li>r &lt; r*+θ → capital OUT → CB sells reserves → M↓</li>
+        </ul>
+        <div class="trap">⚠ ε > 1 means overvalued (expensive), not "strong". High ε reduces export competitiveness</div>
+      </div>
+
+      <div class="cs-box">
+        <h3>16. Growth Accounting</h3>
+        <div class="eq">Δy/y = ΔA/A + α·Δk/k</div>
+        <div class="def">ΔA/A = TFP growth (Solow residual), α·Δk/k = capital deepening contribution, α≈0.3</div>
+        <ul>
+          <li>Solow residual = output growth not explained by capital</li>
+          <li>Captures technology, efficiency, institutions</li>
+          <li>Misallocation (MPK dispersion) → output below frontier</li>
+        </ul>
+        <div class="trap">⚠ Solow residual is measured as what's LEFT OVER — not directly observed</div>
+      </div>
+
+      <div class="cs-box">
+        <h3>17. Austerity Paradox & Misc</h3>
+        <h4>Austerity Paradox</h4>
+        <ul>
+          <li>Cuts in deep recession → Y falls → tax revenue↓</li>
+          <li>If multiplier is large (ZLB): B/Y worsens despite cuts</li>
+          <li>Denominator (Y) shrinks faster than deficit narrows</li>
+        </ul>
+        <h4>Recession Definition</h4>
+        <ul>
+          <li>Rule of thumb: 2 consecutive quarters of negative GDP</li>
+          <li>Official (NBER): breadth across employment, income, production, GDP</li>
+          <li>COVID 2020: only 2 months but officially a recession</li>
+        </ul>
+        <h4>Draghi Principle</h4>
+        <ul>
+          <li>"Whatever it takes" (2012) — words alone broke the crisis spiral</li>
+          <li>Credible CB commitment makes panic self-defeating</li>
+        </ul>
+      </div>
+
+      <div class="cs-box" style="grid-column:span 3">
+        <h3>📊 Curve Shift Quick Reference</h3>
+        <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:9px;line-height:1.3">
+          <tr style="background:#1a3a5c;color:#fff"><th style="padding:3px 5px;text-align:left">Trigger</th><th style="padding:3px">IS</th><th style="padding:3px">MP</th><th style="padding:3px">AD</th><th style="padding:3px">IA</th><th style="padding:3px">ΔY(SR)</th></tr>
+          <tr style="background:#f0f4f8"><td style="padding:2px 5px">G↑ or T↓ (fiscal expansion)</td><td style="text-align:center">→</td><td style="text-align:center">—</td><td style="text-align:center">→</td><td style="text-align:center">—</td><td style="text-align:center;color:#16a34a">↑</td></tr>
+          <tr><td style="padding:2px 5px">G↓ or T↑ (contraction)</td><td style="text-align:center">←</td><td style="text-align:center">—</td><td style="text-align:center">←</td><td style="text-align:center">—</td><td style="text-align:center;color:#dc2626">↓</td></tr>
+          <tr style="background:#f0f4f8"><td style="padding:2px 5px">CB lowers rate (easing)</td><td style="text-align:center">—</td><td style="text-align:center">↓</td><td style="text-align:center">→</td><td style="text-align:center">—</td><td style="text-align:center;color:#16a34a">↑</td></tr>
+          <tr><td style="padding:2px 5px">CB raises rate (tightening)</td><td style="text-align:center">—</td><td style="text-align:center">↑</td><td style="text-align:center">←</td><td style="text-align:center">—</td><td style="text-align:center;color:#dc2626">↓</td></tr>
+          <tr style="background:#f0f4f8"><td style="padding:2px 5px">π↑ (CB reacts per rule)</td><td style="text-align:center">—</td><td style="text-align:center">↑</td><td style="text-align:center">along</td><td style="text-align:center">—</td><td style="text-align:center;color:#dc2626">↓</td></tr>
+          <tr><td style="padding:2px 5px">ε↑ appreciation (NX↓)</td><td style="text-align:center">←</td><td style="text-align:center">—</td><td style="text-align:center">←</td><td style="text-align:center">—</td><td style="text-align:center;color:#dc2626">↓</td></tr>
+          <tr style="background:#f0f4f8"><td style="padding:2px 5px">ε↓ depreciation (NX↑)</td><td style="text-align:center">→</td><td style="text-align:center">—</td><td style="text-align:center">→</td><td style="text-align:center">—</td><td style="text-align:center;color:#16a34a">↑</td></tr>
+          <tr><td style="padding:2px 5px">Oil / adverse supply shock</td><td style="text-align:center">—</td><td style="text-align:center">—</td><td style="text-align:center">—</td><td style="text-align:center">↑</td><td style="text-align:center;color:#dc2626">↓</td></tr>
+          <tr style="background:#f0f4f8"><td style="padding:2px 5px">r*↑ foreign rate (IRP)</td><td style="text-align:center">—</td><td style="text-align:center">↑</td><td style="text-align:center">←</td><td style="text-align:center">—</td><td style="text-align:center;color:#dc2626">↓</td></tr>
+          <tr><td style="padding:2px 5px">θ↑ country risk premium</td><td style="text-align:center">—</td><td style="text-align:center">↑</td><td style="text-align:center">←</td><td style="text-align:center">—</td><td style="text-align:center;color:#dc2626">↓</td></tr>
+          <tr style="background:#f0f4f8"><td style="padding:2px 5px">Y > Y* (MR adjustment)</td><td style="text-align:center">—</td><td style="text-align:center">—</td><td style="text-align:center">along</td><td style="text-align:center">↑</td><td style="text-align:center">↓→Y*</td></tr>
+          <tr><td style="padding:2px 5px">Y &lt; Y* (MR adjustment)</td><td style="text-align:center">—</td><td style="text-align:center">—</td><td style="text-align:center">along</td><td style="text-align:center">↓</td><td style="text-align:center">↑→Y*</td></tr>
+        </table>
+        </div>
+        <div class="trap" style="margin-top:4px">⚠ π change → MP SHIFTS (new rule). Y change → movement ALONG MP (same rule). Most tested error across all exam years.</div>
+      </div>
+
+    </div>
     </div>
   `);
 }
